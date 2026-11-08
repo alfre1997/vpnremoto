@@ -14,13 +14,7 @@
             theme: {
                 extend: {
                     colors: {
-                        cyber: {
-                            cyan: '#00F0FF',
-                            purple: '#A855F7',
-                            dark: '#070B12',
-                            card: '#0F172A',
-                            border: '#1E293B'
-                        }
+                        cyber: { cyan: '#00F0FF', purple: '#A855F7', dark: '#070B12', card: '#0F172A', border: '#1E293B' }
                     }
                 }
             }
@@ -28,23 +22,21 @@
     </script>
     <style>
         body { background-color: #070B12; color: #E2E8F0; font-family: system-ui, -apple-system, sans-serif; }
-        .glow-cyan { box-shadow: 0 0 25px rgba(0, 240, 255, 0.2); }
-        .glow-purple { box-shadow: 0 0 25px rgba(168, 85, 247, 0.2); }
-        .tab-btn.active { border-bottom: 2px solid #00F0FF; color: #00F0FF; background: rgba(0, 240, 255, 0.05); }
+        .glow-cyan { box-shadow: 0 0 25px rgba(0, 240, 255, 0.25); }
     </style>
 </head>
 <body class="min-h-screen flex flex-col">
 
-    <!-- Barra de Navegación Superior -->
+    <!-- BARRA SUPERIOR -->
     <header class="bg-gray-950/95 backdrop-blur border-b border-gray-800 sticky top-0 z-50">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
             <div class="flex items-center space-x-3">
                 <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-cyan-500 to-purple-600 flex items-center justify-center shadow-lg shadow-cyan-500/30">
-                    <i class="fa-solid fa-server text-white text-lg"></i>
+                    <i class="fa-solid fa-bolt text-white text-lg"></i>
                 </div>
                 <div>
                     <span class="text-xl font-bold bg-gradient-to-r from-cyan-400 to-purple-400 bg-clip-text text-transparent">NovaVPN Cloud Panel</span>
-                    <span class="ml-2 text-[10px] px-2 py-0.5 rounded-full bg-cyan-950 text-cyan-400 border border-cyan-800 font-mono">GitHub Pages</span>
+                    <span class="ml-2 text-[10px] px-2 py-0.5 rounded-full bg-cyan-950 text-cyan-400 border border-cyan-800 font-mono">Panel Central GitHub</span>
                 </div>
             </div>
 
@@ -61,259 +53,249 @@
         </div>
     </header>
 
-    <!-- Notificación Toast flotante -->
+    <!-- NOTIFICACIÓN FLOTANTE -->
     <div id="toast" class="fixed bottom-6 right-6 z-50 transform translate-y-24 opacity-0 transition duration-300 px-5 py-3.5 rounded-2xl bg-cyan-600 text-white font-medium shadow-2xl flex items-center space-x-3">
         <i class="fa-solid fa-circle-check text-lg"></i>
         <span id="toastMsg">Cambios guardados</span>
     </div>
 
-    <!-- Menú de Pestañas del Panel -->
-    <nav class="bg-gray-900 border-b border-gray-800">
-        <div class="max-w-7xl mx-auto px-4 flex overflow-x-auto space-x-2">
-            <button onclick="switchTab('servers')" id="tab-servers" class="tab-btn active px-4 py-3.5 text-xs font-bold transition flex items-center space-x-2 whitespace-nowrap">
-                <i class="fa-solid fa-server"></i>
-                <span>Gestión de Servidores (SSH / WS / Proxy / SSL)</span>
-            </button>
-            <button onclick="switchTab('payload')" id="tab-payload" class="tab-btn px-4 py-3.5 text-xs font-bold transition text-gray-400 hover:text-white flex items-center space-x-2 whitespace-nowrap">
-                <i class="fa-solid fa-network-wired"></i>
-                <span>Generador de Payload & Bug Host</span>
-            </button>
-            <button onclick="switchTab('appconfig')" id="tab-appconfig" class="tab-btn px-4 py-3.5 text-xs font-bold transition text-gray-400 hover:text-white flex items-center space-x-2 whitespace-nowrap">
-                <i class="fa-solid fa-sliders"></i>
-                <span>Avisos de la App & DNS</span>
-            </button>
-            <button onclick="switchTab('github')" id="tab-github" class="tab-btn px-4 py-3.5 text-xs font-bold transition text-gray-400 hover:text-white flex items-center space-x-2 whitespace-nowrap">
-                <i class="fa-brands fa-github"></i>
-                <span>Conexión con GitHub</span>
-            </button>
-        </div>
-    </nav>
-
-    <!-- Contenedor Principal -->
+    <!-- CONTENEDOR PRINCIPAL -->
     <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 flex-1 w-full space-y-6">
 
-        <!-- ================= PESTAÑA 1: SERVIDORES ================= -->
-        <section id="sec-servers" class="space-y-6">
-            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                <div>
-                    <h2 class="text-xl font-bold text-white">Servidores SSH y Métodos de Conexión</h2>
-                    <p class="text-xs text-gray-400">Configura tus VPS con SSH Direct, Websocket (Cloudflare), Proxies Squid o SSL/TLS</p>
+        <!-- CONFIGURACIÓN DE CONEXIÓN GITHUB (Desplegable) -->
+        <div class="bg-gray-900 border border-gray-800 rounded-3xl p-5 space-y-4">
+            <div class="flex items-center justify-between cursor-pointer" onclick="toggleGithubSettings()">
+                <div class="flex items-center space-x-3">
+                    <div class="w-8 h-8 rounded-lg bg-gray-800 flex items-center justify-center text-cyan-400">
+                        <i class="fa-brands fa-github text-base"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-sm font-bold text-white flex items-center space-x-2">
+                            <span>Sincronización con Repositorio GitHub</span>
+                            <span id="ghStatusBadge" class="text-[10px] px-2 py-0.2 rounded-full bg-gray-800 text-gray-400 font-mono">No conectado</span>
+                        </h3>
+                        <p class="text-[11px] text-gray-400">Publica el archivo <code class="text-cyan-300 font-mono">config.json</code> directamente para que tu app lo descargue desde cualquier red</p>
+                    </div>
                 </div>
-                <button onclick="openServerModal()" class="px-4 py-2.5 rounded-xl bg-cyan-500 hover:bg-cyan-400 text-gray-950 font-bold text-xs transition flex items-center space-x-2 glow-cyan">
-                    <i class="fa-solid fa-plus"></i>
-                    <span>Añadir Nuevo Servidor</span>
-                </button>
+                <i id="ghChevron" class="fa-solid fa-chevron-down text-gray-400 transition"></i>
             </div>
 
-            <!-- Grid de Servidores -->
-            <div id="serversGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                <!-- Se llena automáticamente con JavaScript -->
-            </div>
-        </section>
-
-        <!-- ================= PESTAÑA 2: PAYLOAD Y PROTOCOLOS ================= -->
-        <section id="sec-payload" class="hidden space-y-6">
-            <div class="bg-gray-900 border border-gray-800 rounded-3xl p-6 space-y-6 shadow-xl">
+            <div id="githubSettingsBody" class="hidden grid grid-cols-1 sm:grid-cols-3 gap-3 pt-3 border-t border-gray-800 text-xs">
                 <div>
-                    <h2 class="text-lg font-bold text-white">Editor de Inyección HTTP y Parámetros CDN</h2>
-                    <p class="text-xs text-gray-400">Configura encabezados HTTP personalizados, SNI para bypass y rutas Websocket</p>
+                    <label class="block text-gray-400 font-semibold mb-1">Usuario de GitHub</label>
+                    <input type="text" id="ghUser" placeholder="ej. tu_usuario" class="w-full bg-gray-950 border border-gray-800 focus:border-cyan-400 rounded-xl px-3 py-2 text-white outline-none">
+                </div>
+                <div>
+                    <label class="block text-gray-400 font-semibold mb-1">Nombre del Repositorio</label>
+                    <input type="text" id="ghRepo" placeholder="ej. novavpn-panel" class="w-full bg-gray-950 border border-gray-800 focus:border-cyan-400 rounded-xl px-3 py-2 text-white outline-none">
+                </div>
+                <div>
+                    <label class="block text-gray-400 font-semibold mb-1">Token de GitHub (PAT con permiso repo)</label>
+                    <input type="password" id="ghToken" placeholder="ghp_••••••••••••••••••••" class="w-full bg-gray-950 border border-gray-800 focus:border-cyan-400 rounded-xl px-3 py-2 text-white outline-none">
+                </div>
+                <div class="sm:col-span-3 text-[11px] text-gray-500 flex flex-wrap items-center justify-between gap-2">
+                    <span>Genera tu token en: <strong>GitHub > Settings > Developer settings > Personal access tokens (classic)</strong> marcando <code>repo</code>.</span>
+                    <button onclick="saveGithubSettings()" class="text-cyan-400 font-bold hover:underline">Guardar credenciales en este navegador</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- FORMULARIO PRINCIPAL UNIFICADO -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+
+            <!-- COLUMNA IZQUIERDA: SERVIDOR SSH Y PROTOCOLO -->
+            <div class="bg-gray-900 border border-gray-800 rounded-3xl p-6 space-y-4 shadow-xl">
+                <div class="flex items-center justify-between pb-3 border-b border-gray-800">
+                    <h3 class="text-base font-bold text-white flex items-center space-x-2">
+                        <i class="fa-solid fa-server text-cyan-400"></i>
+                        <span>1. Datos del Servidor SSH</span>
+                    </h3>
+                    <span class="text-[10px] px-2 py-0.5 rounded-full bg-cyan-950 text-cyan-400 border border-cyan-800 font-mono">VPS</span>
                 </div>
 
-                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 text-xs">
-                    <div class="space-y-4">
-                        <div>
-                            <label class="block text-gray-400 font-semibold mb-1">SNI / Bug Host (Para SSL y WS con Cloudflare/Fastly)</label>
-                            <input type="text" id="activeSni" placeholder="ej. cdn.cloudflare.net o m.facebook.com" class="w-full bg-gray-950 border border-gray-800 focus:border-cyan-400 rounded-xl px-3 py-2.5 text-white font-mono outline-none">
-                            <span class="text-[11px] text-gray-500">Se envía en la extensión TLS Server Name Indication en puertos 443.</span>
+                <div class="space-y-3.5 text-xs">
+                    <!-- Host y Puerto -->
+                    <div class="grid grid-cols-3 gap-2">
+                        <div class="col-span-2">
+                            <label class="block text-gray-400 font-semibold mb-1">Host / Dominio / IP SSH</label>
+                            <input type="text" id="inputSshHost" placeholder="ej. 159.65.20.10 o mi-vps.com" class="w-full bg-gray-950 border border-gray-800 focus:border-cyan-400 rounded-xl px-3 py-2.5 text-white font-mono outline-none">
                         </div>
-
                         <div>
-                            <label class="block text-gray-400 font-semibold mb-1">Ruta WebSocket (Path)</label>
-                            <input type="text" id="activeWsPath" value="/ssh" placeholder="/ssh o /?ed=2048" class="w-full bg-gray-950 border border-gray-800 focus:border-cyan-400 rounded-xl px-3 py-2.5 text-white font-mono outline-none">
+                            <label class="block text-gray-400 font-semibold mb-1">Puerto SSH</label>
+                            <input type="number" id="inputSshPort" value="22" class="w-full bg-gray-950 border border-gray-800 focus:border-cyan-400 rounded-xl px-3 py-2.5 text-white font-mono outline-none">
                         </div>
+                    </div>
 
-                        <div class="grid grid-cols-3 gap-3">
-                            <div class="col-span-2">
-                                <label class="block text-gray-400 font-semibold mb-1">Proxy Remoto (Host / IP)</label>
-                                <input type="text" id="activeProxyHost" placeholder="104.16.249.249" class="w-full bg-gray-950 border border-gray-800 focus:border-cyan-400 rounded-xl px-3 py-2.5 text-white font-mono outline-none">
+                    <!-- Selector de Protocolo -->
+                    <div>
+                        <label class="block text-gray-400 font-semibold mb-1">Protocolo / Método de Conexión</label>
+                        <select id="inputProtocol" onchange="onProtocolChange()" class="w-full bg-gray-950 border border-gray-800 focus:border-cyan-400 rounded-xl px-3 py-2.5 text-white font-bold outline-none">
+                            <option value="SSH_WS">⚡ SSH + WebSocket (HTTP 80 CDN Cloudflare)</option>
+                            <option value="SSH_PROXY">🔌 SSH + HTTP Proxy (Squid + Inyección de Payload)</option>
+                            <option value="SSH_SSL_WS">🔒 SSH + SSL + WebSocket (HTTPS 443 WSS)</option>
+                            <option value="SSH_SSL">🛡️ SSH + SSL / TLS (SNI Bug Host Directo 443)</option>
+                            <option value="SSH_DIRECT">🌐 SSH Direct (Conexión Directa TCP 22)</option>
+                        </select>
+                    </div>
+
+                    <!-- Credenciales SSH Opcionales -->
+                    <div class="p-4 rounded-2xl bg-gray-950 border border-gray-800 space-y-2.5">
+                        <div class="font-bold text-gray-300 flex items-center justify-between">
+                            <span class="flex items-center space-x-1.5">
+                                <i class="fa-solid fa-key text-purple-400"></i>
+                                <span>Credenciales SSH (Opcional)</span>
+                            </span>
+                            <span class="text-[10px] text-purple-400 font-normal">¿Fijas o en App?</span>
+                        </div>
+                        <p class="text-[10px] text-gray-400 leading-tight">
+                            Si dejas estos campos <strong>en blanco</strong>, la app en el celular le pedirá al cliente su usuario y contraseña. Si los llenas aquí, conectará directamente sin pedir nada.
+                        </p>
+                        <div class="grid grid-cols-2 gap-2">
+                            <div>
+                                <label class="block text-gray-500 text-[10px] mb-0.5">Usuario SSH</label>
+                                <input type="text" id="inputSshUser" placeholder="Dejar vacío o escribir" class="w-full bg-gray-900 border border-gray-800 focus:border-purple-400 rounded-xl px-3 py-2 text-white font-mono outline-none">
                             </div>
                             <div>
-                                <label class="block text-gray-400 font-semibold mb-1">Puerto Proxy</label>
-                                <input type="number" id="activeProxyPort" value="8080" class="w-full bg-gray-950 border border-gray-800 focus:border-cyan-400 rounded-xl px-3 py-2.5 text-white font-mono outline-none">
+                                <label class="block text-gray-500 text-[10px] mb-0.5">Contraseña</label>
+                                <input type="password" id="inputSshPass" placeholder="Dejar vacía o escribir" class="w-full bg-gray-900 border border-gray-800 focus:border-purple-400 rounded-xl px-3 py-2 text-white font-mono outline-none">
                             </div>
                         </div>
                     </div>
 
-                    <div class="space-y-3">
-                        <div class="flex items-center justify-between">
-                            <label class="block text-xs font-semibold text-gray-300">Payload HTTP Custom</label>
-                            <div class="space-x-1">
-                                <button type="button" onclick="applyPreset('ws')" class="text-[10px] px-2.5 py-1 rounded-lg bg-gray-800 hover:bg-gray-700 text-cyan-400 border border-gray-700">Preset WS</button>
-                                <button type="button" onclick="applyPreset('proxy')" class="text-[10px] px-2.5 py-1 rounded-lg bg-gray-800 hover:bg-gray-700 text-purple-400 border border-gray-700">Preset Proxy</button>
-                                <button type="button" onclick="applyPreset('front')" class="text-[10px] px-2.5 py-1 rounded-lg bg-gray-800 hover:bg-gray-700 text-green-400 border border-gray-700">Front Inject</button>
+                    <!-- Aviso de la app y DNS -->
+                    <div class="space-y-2 pt-2 border-t border-gray-800">
+                        <div>
+                            <label class="block text-gray-400 font-semibold mb-1">Aviso / Banner en la App Móvil</label>
+                            <input type="text" id="inputBanner" value="Servidor actualizado vía GitHub • Conexión rápida 24/7" class="w-full bg-gray-950 border border-gray-800 focus:border-cyan-400 rounded-xl px-3 py-2 text-white outline-none">
+                        </div>
+                        <div class="grid grid-cols-2 gap-2">
+                            <div>
+                                <label class="block text-gray-400 font-semibold mb-1">DNS Primario</label>
+                                <input type="text" id="inputDnsPrimary" value="1.1.1.1" class="w-full bg-gray-950 border border-gray-800 rounded-xl px-3 py-1.5 text-white font-mono outline-none">
+                            </div>
+                            <div>
+                                <label class="block text-gray-400 font-semibold mb-1">DNS Secundario</label>
+                                <input type="text" id="inputDnsSecondary" value="1.0.0.1" class="w-full bg-gray-950 border border-gray-800 rounded-xl px-3 py-1.5 text-white font-mono outline-none">
                             </div>
                         </div>
-
-                        <div class="flex flex-wrap gap-1.5 p-2 bg-gray-950 rounded-xl border border-gray-800">
-                            <button type="button" onclick="insertTag('[host_port]')" class="text-[10px] px-2 py-0.5 rounded bg-gray-800 hover:bg-cyan-950 text-cyan-300 font-mono">[host_port]</button>
-                            <button type="button" onclick="insertTag('[host]')" class="text-[10px] px-2 py-0.5 rounded bg-gray-800 hover:bg-cyan-950 text-cyan-300 font-mono">[host]</button>
-                            <button type="button" onclick="insertTag('[port]')" class="text-[10px] px-2 py-0.5 rounded bg-gray-800 hover:bg-cyan-950 text-cyan-300 font-mono">[port]</button>
-                            <button type="button" onclick="insertTag('[protocol]')" class="text-[10px] px-2 py-0.5 rounded bg-gray-800 hover:bg-cyan-950 text-cyan-300 font-mono">[protocol]</button>
-                            <button type="button" onclick="insertTag('[crlf]')" class="text-[10px] px-2 py-0.5 rounded bg-gray-800 hover:bg-cyan-950 text-cyan-300 font-mono">[crlf]</button>
-                            <button type="button" onclick="insertTag('[ua]')" class="text-[10px] px-2 py-0.5 rounded bg-gray-800 hover:bg-cyan-950 text-cyan-300 font-mono">[ua]</button>
-                        </div>
-
-                        <textarea id="activePayload" rows="5" class="w-full bg-gray-950 border border-gray-800 rounded-xl p-3 text-cyan-300 font-mono text-xs focus:border-cyan-500 outline-none">CONNECT [host_port] HTTP/1.1[crlf]Host: [host][crlf]Connection: Keep-Alive[crlf][crlf]</textarea>
                     </div>
                 </div>
             </div>
-        </section>
 
-        <!-- ================= PESTAÑA 3: AVISOS Y DNS ================= -->
-        <section id="sec-appconfig" class="hidden space-y-6">
-            <div class="bg-gray-900 border border-gray-800 rounded-3xl p-6 space-y-6 shadow-xl">
-                <div>
-                    <h2 class="text-lg font-bold text-white">Personalización y Red</h2>
-                    <p class="text-xs text-gray-400">Modifica el mensaje de aviso en la app y los DNS recomendados</p>
+            <!-- COLUMNA CENTRAL Y DERECHA: PAYLOAD, SNI, PROXY Y WS (SIEMPRE VISIBLE) -->
+            <div class="lg:col-span-2 bg-gray-900 border border-gray-800 rounded-3xl p-6 space-y-4 shadow-xl">
+                <div class="flex flex-wrap items-center justify-between gap-2 pb-3 border-b border-gray-800">
+                    <h3 class="text-base font-bold text-white flex items-center space-x-2">
+                        <i class="fa-solid fa-network-wired text-purple-400"></i>
+                        <span>2. Configuración de Payload, SNI y Proxy</span>
+                    </h3>
+                    <!-- Botones de Presets Rápidos -->
+                    <div class="flex items-center space-x-1.5">
+                        <span class="text-[10px] text-gray-500 font-bold uppercase mr-1">Presets:</span>
+                        <button type="button" onclick="loadPreset('ws')" class="text-[10px] px-2.5 py-1 rounded-lg bg-cyan-950 text-cyan-300 border border-cyan-800 hover:bg-cyan-900 font-bold transition">WS Cloudflare</button>
+                        <button type="button" onclick="loadPreset('proxy')" class="text-[10px] px-2.5 py-1 rounded-lg bg-purple-950 text-purple-300 border border-purple-800 hover:bg-purple-900 font-bold transition">Proxy Squid</button>
+                        <button type="button" onclick="loadPreset('front')" class="text-[10px] px-2.5 py-1 rounded-lg bg-emerald-950 text-emerald-300 border border-emerald-800 hover:bg-emerald-900 font-bold transition">Front Inject</button>
+                    </div>
                 </div>
 
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
-                    <div class="md:col-span-2">
-                        <label class="block text-gray-400 font-semibold mb-1">Mensaje de Aviso / Banner (Aparece en la parte superior de la app móvil)</label>
-                        <input type="text" id="activeBanner" value="Servidores optimizados • Alta velocidad 24/7" class="w-full bg-gray-950 border border-gray-800 focus:border-cyan-400 rounded-xl px-3 py-2.5 text-white outline-none">
-                    </div>
+                <!-- SNI, Proxy y Ruta WS -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
                     <div>
-                        <label class="block text-gray-400 font-semibold mb-1">DNS Primario</label>
-                        <input type="text" id="activeDnsPrimary" value="1.1.1.1" class="w-full bg-gray-950 border border-gray-800 rounded-xl px-3 py-2.5 text-white font-mono outline-none">
+                        <label class="block text-gray-400 font-semibold mb-1">SNI / Bug Host (Para SSL y CDN)</label>
+                        <input type="text" id="inputSni" placeholder="ej. cdn.cloudflare.net o m.facebook.com" class="w-full bg-gray-950 border border-gray-800 focus:border-cyan-400 rounded-xl px-3 py-2.5 text-white font-mono outline-none">
+                        <span class="text-[10px] text-gray-500">Host de bypass utilizado en conexiones cifradas SSL/TLS y WSS.</span>
                     </div>
+
                     <div>
-                        <label class="block text-gray-400 font-semibold mb-1">DNS Secundario</label>
-                        <input type="text" id="activeDnsSecondary" value="1.0.0.1" class="w-full bg-gray-950 border border-gray-800 rounded-xl px-3 py-2.5 text-white font-mono outline-none">
+                        <label class="block text-gray-400 font-semibold mb-1">Ruta WebSocket (Path)</label>
+                        <input type="text" id="inputWsPath" value="/ssh" placeholder="/ssh o /?ed=2048" class="w-full bg-gray-950 border border-gray-800 focus:border-cyan-400 rounded-xl px-3 py-2.5 text-white font-mono outline-none">
+                        <span class="text-[10px] text-gray-500">Ruta configurada en tu servidor WebSocket (ej. /ssh).</span>
+                    </div>
+
+                    <div>
+                        <label class="block text-gray-400 font-semibold mb-1">Proxy Remoto (Host / IP)</label>
+                        <input type="text" id="inputProxyHost" placeholder="104.16.249.249 o IP de tu Squid" class="w-full bg-gray-950 border border-gray-800 focus:border-cyan-400 rounded-xl px-3 py-2.5 text-white font-mono outline-none">
+                    </div>
+
+                    <div>
+                        <label class="block text-gray-400 font-semibold mb-1">Puerto del Proxy Remoto</label>
+                        <input type="number" id="inputProxyPort" value="8080" class="w-full bg-gray-950 border border-gray-800 focus:border-cyan-400 rounded-xl px-3 py-2.5 text-white font-mono outline-none">
+                    </div>
+                </div>
+
+                <!-- CAJA VISIBLE DEL PAYLOAD HTTP -->
+                <div class="space-y-2 pt-2 border-t border-gray-800">
+                    <div class="flex items-center justify-between">
+                        <label class="block text-xs font-bold text-cyan-400 flex items-center space-x-1.5">
+                            <i class="fa-solid fa-code"></i>
+                            <span>PAYLOAD HTTP PERSONALIZADO</span>
+                        </label>
+                        <span class="text-[10px] text-gray-500 font-mono">Inyección HTTP Custom</span>
+                    </div>
+
+                    <!-- Barra de Tags / Comodines de inserción rápida -->
+                    <div class="flex flex-wrap gap-1.5 p-2.5 bg-gray-950 rounded-2xl border border-gray-800">
+                        <span class="text-[10px] text-gray-500 py-0.5 mr-1 font-bold">Insertar:</span>
+                        <button type="button" onclick="insertTag('[host_port]')" class="text-[10px] px-2 py-0.5 rounded-lg bg-gray-800 hover:bg-cyan-950 hover:text-cyan-400 text-gray-300 font-mono transition">[host_port]</button>
+                        <button type="button" onclick="insertTag('[host]')" class="text-[10px] px-2 py-0.5 rounded-lg bg-gray-800 hover:bg-cyan-950 hover:text-cyan-400 text-gray-300 font-mono transition">[host]</button>
+                        <button type="button" onclick="insertTag('[port]')" class="text-[10px] px-2 py-0.5 rounded-lg bg-gray-800 hover:bg-cyan-950 hover:text-cyan-400 text-gray-300 font-mono transition">[port]</button>
+                        <button type="button" onclick="insertTag('[protocol]')" class="text-[10px] px-2 py-0.5 rounded-lg bg-gray-800 hover:bg-cyan-950 hover:text-cyan-400 text-gray-300 font-mono transition">[protocol]</button>
+                        <button type="button" onclick="insertTag('[crlf]')" class="text-[10px] px-2 py-0.5 rounded-lg bg-gray-800 hover:bg-cyan-950 hover:text-cyan-400 text-gray-300 font-mono transition">[crlf]</button>
+                        <button type="button" onclick="insertTag('[ua]')" class="text-[10px] px-2 py-0.5 rounded-lg bg-gray-800 hover:bg-cyan-950 hover:text-cyan-400 text-gray-300 font-mono transition">[ua]</button>
+                        <button type="button" onclick="insertTag('[split]')" class="text-[10px] px-2 py-0.5 rounded-lg bg-gray-800 hover:bg-cyan-950 hover:text-cyan-400 text-gray-300 font-mono transition">[split]</button>
+                    </div>
+
+                    <!-- TEXTAREA DEL PAYLOAD -->
+                    <textarea id="inputPayload" rows="6" class="w-full bg-gray-950 border border-cyan-500/30 focus:border-cyan-400 rounded-2xl p-4 text-cyan-300 font-mono text-xs focus:outline-none leading-relaxed shadow-inner" placeholder="Escribe aquí tu payload o presiona un botón de Preset de arriba..."></textarea>
+                </div>
+
+                <!-- Botones de Acción -->
+                <div class="flex flex-wrap items-center justify-between gap-3 pt-3 border-t border-gray-800">
+                    <span class="text-[11px] text-gray-400">Todos los cambios se reflejan automáticamente en el archivo JSON.</span>
+                    <div class="flex items-center space-x-2">
+                        <button onclick="downloadJson()" class="px-4 py-2 rounded-xl bg-gray-800 hover:bg-gray-700 text-white font-bold text-xs transition border border-gray-700 flex items-center space-x-1.5">
+                            <i class="fa-solid fa-download"></i>
+                            <span>Descargar config.json</span>
+                        </button>
+                        <button onclick="publishToGitHub()" class="px-5 py-2 rounded-xl bg-cyan-500 hover:bg-cyan-400 text-gray-950 font-bold text-xs transition flex items-center space-x-1.5 glow-cyan">
+                            <i class="fa-brands fa-github"></i>
+                            <span>Publicar en GitHub</span>
+                        </button>
                     </div>
                 </div>
             </div>
-        </section>
 
-        <!-- ================= PESTAÑA 4: GITHUB SYNC ================= -->
-        <section id="sec-github" class="hidden space-y-6">
-            <div class="bg-gray-900 border border-gray-800 rounded-3xl p-6 space-y-4 shadow-xl text-xs">
-                <div>
-                    <h2 class="text-lg font-bold text-white">Sincronización Automática con GitHub</h2>
-                    <p class="text-gray-400">Ingresa tus datos para publicar los cambios en tu archivo <code class="text-cyan-300 font-mono">config.json</code> con 1 clic</p>
+            <!-- VISTA PREVIA Y ENLACE RAW DE GITHUB -->
+            <div class="lg:col-span-3 bg-gray-950 border border-gray-800 rounded-3xl p-6 space-y-4 shadow-2xl font-mono text-xs">
+                <div class="flex items-center justify-between pb-3 border-b border-gray-800">
+                    <div class="flex items-center space-x-2">
+                        <span class="w-3 h-3 rounded-full bg-green-400 animate-pulse"></span>
+                        <span class="text-white font-bold font-sans">Enlace Raw generado para la App Móvil:</span>
+                    </div>
+                    <button onclick="copyRawUrl()" class="px-3 py-1.5 rounded-lg bg-gray-800 hover:bg-gray-700 text-cyan-400 font-sans text-xs transition">
+                        <i class="fa-solid fa-copy mr-1"></i> Copiar Enlace
+                    </button>
                 </div>
 
-                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-2">
-                    <div>
-                        <label class="block text-gray-400 font-semibold mb-1">Usuario de GitHub</label>
-                        <input type="text" id="ghUser" placeholder="ej. alfredo_pinanez" class="w-full bg-gray-950 border border-gray-800 focus:border-cyan-400 rounded-xl px-3 py-2 text-white outline-none">
-                    </div>
-                    <div>
-                        <label class="block text-gray-400 font-semibold mb-1">Nombre del Repositorio</label>
-                        <input type="text" id="ghRepo" placeholder="ej. novavpn-panel" class="w-full bg-gray-950 border border-gray-800 focus:border-cyan-400 rounded-xl px-3 py-2 text-white outline-none">
-                    </div>
-                    <div>
-                        <label class="block text-gray-400 font-semibold mb-1">GitHub Token (PAT con permiso repo)</label>
-                        <input type="password" id="ghToken" placeholder="ghp_••••••••••••••••••••" class="w-full bg-gray-950 border border-gray-800 focus:border-cyan-400 rounded-xl px-3 py-2 text-white outline-none">
-                    </div>
+                <div class="p-3 bg-gray-900 border border-gray-800 rounded-xl text-cyan-300 break-all select-all" id="rawUrlDisplay">
+                    https://raw.githubusercontent.com/tu_usuario/novavpn-panel/main/config.json
                 </div>
 
-                <div class="flex items-center justify-between pt-2 border-t border-gray-800 text-[11px] text-gray-500">
-                    <span>Genera tu token en: <strong>GitHub > Settings > Developer settings > Personal access tokens (classic)</strong> seleccionando <code>repo</code>.</span>
-                    <button onclick="saveGithubSettings()" class="text-cyan-400 font-bold hover:underline">Guardar en navegador</button>
+                <div class="flex items-center justify-between pt-2">
+                    <span class="text-gray-400 font-bold font-sans">Contenido de config.json en tiempo real:</span>
+                    <button onclick="copyGeneratedJson()" class="px-3 py-1.5 rounded-lg bg-gray-800 hover:bg-gray-700 text-gray-300 font-sans text-xs transition">
+                        <i class="fa-solid fa-code mr-1"></i> Copiar Código JSON
+                    </button>
                 </div>
+                <pre id="jsonPreview" class="bg-gray-900 border border-gray-800/80 rounded-2xl p-4 text-cyan-300 overflow-x-auto text-[11px] leading-relaxed max-h-72"></pre>
             </div>
 
-            <!-- Vista Previa del JSON -->
-            <div class="bg-gray-950 border border-gray-800 rounded-3xl p-6 space-y-3 font-mono text-xs">
-                <div class="flex items-center justify-between">
-                    <span class="text-gray-400 font-bold">Vista Previa de config.json</span>
-                    <button onclick="copyJson()" class="px-3 py-1.5 rounded-lg bg-gray-800 hover:bg-gray-700 text-cyan-400">Copiar JSON</button>
-                </div>
-                <pre id="jsonPreview" class="bg-gray-900 border border-gray-800 rounded-2xl p-4 text-cyan-300 overflow-x-auto text-[11px] leading-relaxed max-h-80"></pre>
-            </div>
-        </section>
+        </div>
 
     </main>
 
-    <!-- MODAL: AÑADIR / EDITAR SERVIDOR -->
-    <div id="serverModal" class="fixed inset-0 z-50 hidden bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
-        <div class="bg-gray-900 border border-gray-800 rounded-3xl p-6 max-w-lg w-full space-y-4 shadow-2xl max-h-[90vh] overflow-y-auto">
-            <div class="flex items-center justify-between pb-3 border-b border-gray-800">
-                <h3 class="text-base font-bold text-white" id="modalTitle">Nuevo Servidor</h3>
-                <button onclick="closeServerModal()" class="text-gray-400 hover:text-white"><i class="fa-solid fa-xmark text-lg"></i></button>
-            </div>
-
-            <input type="hidden" id="modalId">
-
-            <div class="space-y-3 text-xs">
-                <div>
-                    <label class="block text-gray-400 font-semibold mb-1">Nombre Descriptivo</label>
-                    <input type="text" id="modalName" placeholder="ej. Servidor WS Cloudflare #1" class="w-full bg-gray-950 border border-gray-800 rounded-xl px-3 py-2 text-white">
-                </div>
-
-                <div class="grid grid-cols-2 gap-3">
-                    <div>
-                        <label class="block text-gray-400 font-semibold mb-1">País</label>
-                        <input type="text" id="modalCountry" placeholder="Estados Unidos" class="w-full bg-gray-950 border border-gray-800 rounded-xl px-3 py-2 text-white">
-                    </div>
-                    <div>
-                        <label class="block text-gray-400 font-semibold mb-1">Código País</label>
-                        <input type="text" id="modalCountryCode" placeholder="US" class="w-full bg-gray-950 border border-gray-800 rounded-xl px-3 py-2 text-white uppercase">
-                    </div>
-                </div>
-
-                <div class="grid grid-cols-3 gap-2">
-                    <div class="col-span-2">
-                        <label class="block text-gray-400 font-semibold mb-1">Host / IP del Servidor SSH</label>
-                        <input type="text" id="modalHost" placeholder="159.65.20.10" class="w-full bg-gray-950 border border-gray-800 rounded-xl px-3 py-2 text-white font-mono">
-                    </div>
-                    <div>
-                        <label class="block text-gray-400 font-semibold mb-1">Puerto SSH</label>
-                        <input type="number" id="modalPort" value="22" class="w-full bg-gray-950 border border-gray-800 rounded-xl px-3 py-2 text-white font-mono">
-                    </div>
-                </div>
-
-                <div>
-                    <label class="block text-gray-400 font-semibold mb-1">Protocolo Predeterminado</label>
-                    <select id="modalProtocol" class="w-full bg-gray-950 border border-gray-800 rounded-xl px-3 py-2 text-white">
-                        <option value="SSH_WS">SSH + WebSocket (CDN HTTP 80)</option>
-                        <option value="SSH_SSL_WS">SSH + SSL + WS (CDN HTTPS 443 WSS)</option>
-                        <option value="SSH_DIRECT">SSH Direct (TCP 22)</option>
-                        <option value="SSH_PROXY">SSH + HTTP Proxy (Squid)</option>
-                        <option value="SSH_SSL">SSH + SSL / TLS (SNI)</option>
-                    </select>
-                </div>
-
-                <div class="p-3.5 rounded-2xl bg-gray-950 border border-gray-800 space-y-2.5">
-                    <div class="font-bold text-gray-300 flex items-center space-x-1.5">
-                        <i class="fa-solid fa-key text-purple-400"></i>
-                        <span>Credenciales SSH (Opcional)</span>
-                    </div>
-                    <p class="text-[10px] text-gray-400 leading-tight">
-                        Si las dejas <strong>vacías</strong>, la aplicación en el celular le solicitará usuario y contraseña al cliente antes de conectar.
-                    </p>
-                    <div class="grid grid-cols-2 gap-2">
-                        <div>
-                            <input type="text" id="modalUser" placeholder="Usuario (o vacío)" class="w-full bg-gray-900 border border-gray-800 rounded-xl px-3 py-2 text-white font-mono">
-                        </div>
-                        <div>
-                            <input type="password" id="modalPass" placeholder="Contraseña (o vacía)" class="w-full bg-gray-900 border border-gray-800 rounded-xl px-3 py-2 text-white font-mono">
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="flex justify-end space-x-2 pt-3 border-t border-gray-800">
-                <button onclick="closeServerModal()" class="px-4 py-2 rounded-xl bg-gray-800 text-gray-300 text-xs">Cancelar</button>
-                <button onclick="saveServerModal()" class="px-5 py-2 rounded-xl bg-cyan-500 hover:bg-cyan-400 text-gray-950 font-bold text-xs">Guardar Servidor</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Script de Funcionalidad JavaScript -->
+    <!-- LOGICA JAVASCRIPT -->
     <script>
-        var servers = JSON.parse(localStorage.getItem('novavpn_servers') || '[]');
-
         window.addEventListener('DOMContentLoaded', function() {
             var savedUser = localStorage.getItem('gh_user') || '';
             var savedRepo = localStorage.getItem('gh_repo') || '';
@@ -323,37 +305,70 @@
             if (savedRepo) document.getElementById('ghRepo').value = savedRepo;
             if (savedToken) document.getElementById('ghToken').value = savedToken;
 
-            // Cargar configuración guardada
-            var savedCfg = JSON.parse(localStorage.getItem('novavpn_cfg') || '{}');
-            if (savedCfg.sniHost) document.getElementById('activeSni').value = savedCfg.sniHost;
-            if (savedCfg.wsPath) document.getElementById('activeWsPath').value = savedCfg.wsPath;
-            if (savedCfg.proxyHost) document.getElementById('activeProxyHost').value = savedCfg.proxyHost;
-            if (savedCfg.proxyPort) document.getElementById('activeProxyPort').value = savedCfg.proxyPort;
-            if (savedCfg.payload) document.getElementById('activePayload').value = savedCfg.payload;
-            if (savedCfg.banner) document.getElementById('activeBanner').value = savedCfg.banner;
-            if (savedCfg.dnsPrimary) document.getElementById('activeDnsPrimary').value = savedCfg.dnsPrimary;
-            if (savedCfg.dnsSecondary) document.getElementById('activeDnsSecondary').value = savedCfg.dnsSecondary;
+            if (savedUser && savedRepo) {
+                var badge = document.getElementById('ghStatusBadge');
+                badge.innerText = 'Conectado a ' + savedUser + '/' + savedRepo;
+                badge.className = 'text-[10px] px-2 py-0.2 rounded-full bg-green-950 text-green-400 border border-green-800 font-mono';
+            }
 
-            renderServers();
+            var saved = JSON.parse(localStorage.getItem('novavpn_panel_config') || '{}');
+            if (saved.sshHost) document.getElementById('inputSshHost').value = saved.sshHost;
+            if (saved.sshPort) document.getElementById('inputSshPort').value = saved.sshPort;
+            if (saved.protocol) document.getElementById('inputProtocol').value = saved.protocol;
+            if (saved.sshUsername) document.getElementById('inputSshUser').value = saved.sshUsername;
+            if (saved.sshPassword) document.getElementById('inputSshPass').value = saved.sshPassword;
+            if (saved.sniHost) document.getElementById('inputSni').value = saved.sniHost;
+            if (saved.wsPath) document.getElementById('inputWsPath').value = saved.wsPath;
+            if (saved.proxyHost) document.getElementById('inputProxyHost').value = saved.proxyHost;
+            if (saved.proxyPort) document.getElementById('inputProxyPort').value = saved.proxyPort;
+            if (saved.banner) document.getElementById('inputBanner').value = saved.banner;
+            if (saved.dnsPrimary) document.getElementById('inputDnsPrimary').value = saved.dnsPrimary;
+            if (saved.dnsSecondary) document.getElementById('inputDnsSecondary').value = saved.dnsSecondary;
+
+            if (saved.payload) {
+                document.getElementById('inputPayload').value = saved.payload;
+            } else {
+                loadPreset('ws');
+            }
+
             updatePreview();
 
-            ['activeSni', 'activeWsPath', 'activeProxyHost', 'activeProxyPort', 'activePayload', 'activeBanner', 'activeDnsPrimary', 'activeDnsSecondary'].forEach(function(id) {
+            ['inputSshHost', 'inputSshPort', 'inputProtocol', 'inputSshUser', 'inputSshPass', 'inputSni', 'inputWsPath', 'inputProxyHost', 'inputProxyPort', 'inputPayload', 'inputBanner', 'inputDnsPrimary', 'inputDnsSecondary'].forEach(function(id) {
                 var el = document.getElementById(id);
                 if (el) el.addEventListener('input', function() {
-                    saveLocalConfig();
+                    saveLocal();
                     updatePreview();
                 });
             });
         });
 
-        function switchTab(tab) {
-            document.querySelectorAll('.tab-btn').forEach(function(b) { b.classList.remove('active'); });
-            document.querySelectorAll('main > section').forEach(function(s) { s.classList.add('hidden'); });
+        function toggleGithubSettings() {
+            var body = document.getElementById('githubSettingsBody');
+            var chevron = document.getElementById('ghChevron');
+            if (body.classList.contains('hidden')) {
+                body.classList.remove('hidden');
+                chevron.classList.add('rotate-180');
+            } else {
+                body.classList.add('hidden');
+                chevron.classList.remove('rotate-180');
+            }
+        }
 
-            var b = document.getElementById('tab-' + tab);
-            var s = document.getElementById('sec-' + tab);
-            if (b) b.classList.add('active');
-            if (s) s.classList.remove('hidden');
+        function saveGithubSettings() {
+            var u = document.getElementById('ghUser').value.trim();
+            var r = document.getElementById('ghRepo').value.trim();
+            var t = document.getElementById('ghToken').value.trim();
+            localStorage.setItem('gh_user', u);
+            localStorage.setItem('gh_repo', r);
+            localStorage.setItem('gh_token', t);
+
+            if (u && r) {
+                var badge = document.getElementById('ghStatusBadge');
+                badge.innerText = 'Conectado a ' + u + '/' + r;
+                badge.className = 'text-[10px] px-2 py-0.2 rounded-full bg-green-950 text-green-400 border border-green-800 font-mono';
+            }
+            updatePreview();
+            showToast('Credenciales de GitHub guardadas');
         }
 
         function showToast(msg) {
@@ -363,166 +378,104 @@
             setTimeout(function() { toast.classList.add('translate-y-24', 'opacity-0'); }, 3000);
         }
 
-        function renderServers() {
-            var grid = document.getElementById('serversGrid');
-            if (servers.length === 0) {
-                grid.innerHTML = '<div class="col-span-full py-12 text-center bg-gray-900 border border-gray-800 rounded-3xl p-8">' +
-                    '<i class="fa-solid fa-server text-gray-600 text-4xl mb-3"></i>' +
-                    '<h4 class="text-base font-bold text-white">No tienes servidores agregados</h4>' +
-                    '<p class="text-xs text-gray-500 mt-1 mb-4">Presiona "Añadir Nuevo Servidor" para configurar tu primer VPS SSH / Websocket.</p>' +
-                    '<button onclick="openServerModal()" class="px-4 py-2 bg-cyan-500 text-gray-950 font-bold text-xs rounded-xl">Crear Servidor</button>' +
-                    '</div>';
-                return;
-            }
+        function buildConfig() {
+            var proto = document.getElementById('inputProtocol').value;
+            var host = document.getElementById('inputSshHost').value.trim();
+            var port = parseInt(document.getElementById('inputSshPort').value) || 22;
+            var user = document.getElementById('inputSshUser').value.trim();
+            var pass = document.getElementById('inputSshPass').value;
+            var payload = document.getElementById('inputPayload').value;
+            var sni = document.getElementById('inputSni').value.trim();
+            var wsPath = document.getElementById('inputWsPath').value.trim() || "/ssh";
+            var proxyHost = document.getElementById('inputProxyHost').value.trim();
+            var proxyPort = parseInt(document.getElementById('inputProxyPort').value) || 8080;
+            var banner = document.getElementById('inputBanner').value.trim();
+            var dns1 = document.getElementById('inputDnsPrimary').value.trim() || "1.1.1.1";
+            var dns2 = document.getElementById('inputDnsSecondary').value.trim() || "1.0.0.1";
 
-            grid.innerHTML = servers.map(function(s, index) {
-                return '<div class="bg-gray-900 border border-gray-800 rounded-3xl p-5 space-y-3 relative">' +
-                    '<div class="flex items-center justify-between">' +
-                        '<div class="flex items-center space-x-2">' +
-                            '<span class="text-xl">🌐</span>' +
-                            '<div>' +
-                                '<h4 class="text-sm font-bold text-white">' + s.name + '</h4>' +
-                                '<p class="text-[11px] font-mono text-cyan-400">' + s.host + ':' + s.port + '</p>' +
-                            '</div>' +
-                        '</div>' +
-                        '<span class="text-[10px] px-2 py-0.5 rounded-full bg-cyan-950 text-cyan-400 border border-cyan-800 font-mono">' + s.protocol + '</span>' +
-                    '</div>' +
-                    '<div class="text-[11px] text-gray-400 bg-gray-950 p-2.5 rounded-xl border border-gray-800 flex justify-between">' +
-                        '<span>Usuario: <strong>' + (s.username || '<span class="text-purple-400">Pide en la app</span>') + '</strong></span>' +
-                        '<span>Contraseña: <strong>' + (s.password ? '••••••••' : '<span class="text-purple-400">Pide en la app</span>') + '</strong></span>' +
-                    '</div>' +
-                    '<div class="flex justify-end space-x-2 pt-2 border-t border-gray-800">' +
-                        '<button onclick="editServer(' + index + ')" class="text-xs text-cyan-400 hover:text-cyan-300 px-2 py-1"><i class="fa-solid fa-pen-to-square mr-1"></i>Editar</button>' +
-                        '<button onclick="deleteServer(' + index + ')" class="text-xs text-red-400 hover:text-red-300 px-2 py-1"><i class="fa-solid fa-trash mr-1"></i>Eliminar</button>' +
-                    '</div>' +
-                '</div>';
-            }).join('');
-        }
-
-        function openServerModal() {
-            document.getElementById('modalId').value = '';
-            document.getElementById('modalTitle').innerText = 'Nuevo Servidor SSH';
-            document.getElementById('modalName').value = '';
-            document.getElementById('modalCountry').value = 'Estados Unidos';
-            document.getElementById('modalCountryCode').value = 'US';
-            document.getElementById('modalHost').value = '';
-            document.getElementById('modalPort').value = '22';
-            document.getElementById('modalProtocol').value = 'SSH_WS';
-            document.getElementById('modalUser').value = '';
-            document.getElementById('modalPass').value = '';
-            document.getElementById('serverModal').classList.remove('hidden');
-        }
-
-        function editServer(index) {
-            var s = servers[index];
-            document.getElementById('modalId').value = index;
-            document.getElementById('modalTitle').innerText = 'Editar Servidor';
-            document.getElementById('modalName').value = s.name;
-            document.getElementById('modalCountry').value = s.country || 'Mundo';
-            document.getElementById('modalCountryCode').value = s.countryCode || 'US';
-            document.getElementById('modalHost').value = s.host;
-            document.getElementById('modalPort').value = s.port;
-            document.getElementById('modalProtocol').value = s.protocol || 'SSH_WS';
-            document.getElementById('modalUser').value = s.username || '';
-            document.getElementById('modalPass').value = s.password || '';
-            document.getElementById('serverModal').classList.remove('hidden');
-        }
-
-        function closeServerModal() {
-            document.getElementById('serverModal').classList.add('hidden');
-        }
-
-        function saveServerModal() {
-            var host = document.getElementById('modalHost').value.trim();
-            if (!host) { alert('Ingresa el Host o IP del servidor SSH'); return; }
-
-            var serverData = {
-                name: document.getElementById('modalName').value.trim() || host,
-                country: document.getElementById('modalCountry').value.trim() || 'Mundo',
-                countryCode: document.getElementById('modalCountryCode').value.trim().toUpperCase() || 'US',
-                host: host,
-                port: parseInt(document.getElementById('modalPort').value) || 22,
-                protocol: document.getElementById('modalProtocol').value,
-                username: document.getElementById('modalUser').value.trim(),
-                password: document.getElementById('modalPass').value
-            };
-
-            var editIdx = document.getElementById('modalId').value;
-            if (editIdx !== '') {
-                servers[parseInt(editIdx)] = serverData;
-            } else {
-                servers.push(serverData);
-            }
-
-            localStorage.setItem('novavpn_servers', JSON.stringify(servers));
-            closeServerModal();
-            renderServers();
-            updatePreview();
-            showToast('Servidor guardado');
-        }
-
-        function deleteServer(index) {
-            if (confirm('¿Eliminar este servidor?')) {
-                servers.splice(index, 1);
-                localStorage.setItem('novavpn_servers', JSON.stringify(servers));
-                renderServers();
-                updatePreview();
-                showToast('Servidor eliminado');
-            }
-        }
-
-        function buildFullJson() {
-            var activeSrv = servers[0] || { host: "127.0.0.1", port: 22, protocol: "SSH_WS", username: "", password: "" };
             return {
                 version: "2.0",
                 appName: "NovaVPN Custom",
                 updatedAt: new Date().toISOString(),
                 config: {
-                    protocol: activeSrv.protocol || "SSH_WS",
-                    sshHost: activeSrv.host || "",
-                    sshPort: activeSrv.port || 22,
-                    sshUsername: activeSrv.username || "",
-                    sshPassword: activeSrv.password || "",
-                    payload: document.getElementById('activePayload').value,
-                    sniHost: document.getElementById('activeSni').value.trim(),
-                    proxyHost: document.getElementById('activeProxyHost').value.trim(),
-                    proxyPort: parseInt(document.getElementById('activeProxyPort').value) || 8080,
-                    wsPath: document.getElementById('activeWsPath').value.trim() || "/ssh",
-                    dnsPrimary: document.getElementById('activeDnsPrimary').value.trim() || "1.1.1.1",
-                    dnsSecondary: document.getElementById('activeDnsSecondary').value.trim() || "1.0.0.1",
+                    protocol: proto,
+                    sshHost: host,
+                    sshPort: port,
+                    sshUsername: user,
+                    sshPassword: pass,
+                    payload: payload,
+                    sniHost: sni,
+                    proxyHost: proxyHost,
+                    proxyPort: proxyPort,
+                    wsPath: wsPath,
+                    dnsPrimary: dns1,
+                    dnsSecondary: dns2,
                     theme: "CYBER_NEON",
-                    banner: document.getElementById('activeBanner').value.trim()
+                    banner: banner
                 },
-                servers: servers
+                servers: [
+                    {
+                        id: "srv-active-primary",
+                        name: host ? "VPS Principal (" + proto + ")" : "Servidor Principal",
+                        country: "Global",
+                        countryCode: "US",
+                        host: host,
+                        port: port,
+                        sslPort: 443,
+                        wsPort: 80,
+                        username: user,
+                        password: pass,
+                        isCustom: true
+                    }
+                ]
             };
         }
 
-        function saveLocalConfig() {
-            var cfg = {
-                sniHost: document.getElementById('activeSni').value.trim(),
-                wsPath: document.getElementById('activeWsPath').value.trim(),
-                proxyHost: document.getElementById('activeProxyHost').value.trim(),
-                proxyPort: document.getElementById('activeProxyPort').value,
-                payload: document.getElementById('activePayload').value,
-                banner: document.getElementById('activeBanner').value.trim(),
-                dnsPrimary: document.getElementById('activeDnsPrimary').value.trim(),
-                dnsSecondary: document.getElementById('activeDnsSecondary').value.trim()
+        function saveLocal() {
+            var data = {
+                sshHost: document.getElementById('inputSshHost').value.trim(),
+                sshPort: document.getElementById('inputSshPort').value,
+                protocol: document.getElementById('inputProtocol').value,
+                sshUsername: document.getElementById('inputSshUser').value.trim(),
+                sshPassword: document.getElementById('inputSshPass').value,
+                payload: document.getElementById('inputPayload').value,
+                sniHost: document.getElementById('inputSni').value.trim(),
+                wsPath: document.getElementById('inputWsPath').value.trim(),
+                proxyHost: document.getElementById('inputProxyHost').value.trim(),
+                proxyPort: document.getElementById('inputProxyPort').value,
+                banner: document.getElementById('inputBanner').value.trim(),
+                dnsPrimary: document.getElementById('inputDnsPrimary').value.trim(),
+                dnsSecondary: document.getElementById('inputDnsSecondary').value.trim()
             };
-            localStorage.setItem('novavpn_cfg', JSON.stringify(cfg));
+            localStorage.setItem('novavpn_panel_config', JSON.stringify(data));
         }
 
         function updatePreview() {
-            document.getElementById('jsonPreview').innerText = JSON.stringify(buildFullJson(), null, 2);
+            var cfg = buildConfig();
+            document.getElementById('jsonPreview').innerText = JSON.stringify(cfg, null, 2);
+
+            var u = document.getElementById('ghUser').value.trim() || 'tu_usuario';
+            var r = document.getElementById('ghRepo').value.trim() || 'novavpn-panel';
+            var raw = 'https://raw.githubusercontent.com/' + u + '/' + r + '/main/config.json';
+            document.getElementById('rawUrlDisplay').innerText = raw;
         }
 
-        function copyJson() {
-            navigator.clipboard.writeText(document.getElementById('jsonPreview').innerText).then(function() {
+        function copyRawUrl() {
+            var text = document.getElementById('rawUrlDisplay').innerText;
+            navigator.clipboard.writeText(text).then(function() {
+                showToast('Enlace Raw copiado');
+            });
+        }
+
+        function copyGeneratedJson() {
+            var text = document.getElementById('jsonPreview').innerText;
+            navigator.clipboard.writeText(text).then(function() {
                 showToast('JSON copiado al portapapeles');
             });
         }
 
         function downloadJson() {
-            var dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(buildFullJson(), null, 2));
+            var dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(buildConfig(), null, 2));
             var a = document.createElement('a');
             a.setAttribute("href", dataStr);
             a.setAttribute("download", "config.json");
@@ -532,36 +485,49 @@
             showToast('Archivo config.json descargado');
         }
 
-        function saveGithubSettings() {
-            localStorage.setItem('gh_user', document.getElementById('ghUser').value.trim());
-            localStorage.setItem('gh_repo', document.getElementById('ghRepo').value.trim());
-            localStorage.setItem('gh_token', document.getElementById('ghToken').value.trim());
-            showToast('Credenciales de GitHub guardadas');
-        }
-
         function insertTag(tag) {
-            var t = document.getElementById('activePayload');
+            var t = document.getElementById('inputPayload');
             var start = t.selectionStart;
             var end = t.selectionEnd;
             t.value = t.value.substring(0, start) + tag + t.value.substring(end);
             t.focus();
             t.selectionStart = t.selectionEnd = start + tag.length;
-            saveLocalConfig();
+            saveLocal();
             updatePreview();
         }
 
-        function applyPreset(type) {
-            var p = document.getElementById('activePayload');
+        function loadPreset(type) {
+            var p = document.getElementById('inputPayload');
+            var proto = document.getElementById('inputProtocol');
+
             if (type === 'ws') {
+                proto.value = 'SSH_WS';
                 p.value = "GET /ssh HTTP/1.1[crlf]Host: [host][crlf]Upgrade: websocket[crlf]Connection: Upgrade[crlf]Sec-WebSocket-Key: dGhlIHNhbXBsZSBub25jZQ==[crlf]Sec-WebSocket-Version: 13[crlf][crlf]";
             } else if (type === 'proxy') {
+                proto.value = 'SSH_PROXY';
                 p.value = "CONNECT [host_port] HTTP/1.1[crlf]Host: [host][crlf]X-Online-Host: [host][crlf]Connection: Keep-Alive[crlf][crlf]";
             } else if (type === 'front') {
+                proto.value = 'SSH_PROXY';
                 p.value = "GET / HTTP/1.1[crlf]Host: [host][crlf][crlf]CONNECT [host_port] HTTP/1.1[crlf][crlf]";
             }
-            saveLocalConfig();
+            saveLocal();
             updatePreview();
-            showToast('Preset aplicado');
+            showToast('Preset cargado en el editor de Payload');
+        }
+
+        function onProtocolChange() {
+            var proto = document.getElementById('inputProtocol').value;
+            if (proto === 'SSH_WS' || proto === 'SSH_SSL_WS') {
+                if (!document.getElementById('inputPayload').value.includes('Upgrade: websocket')) {
+                    loadPreset('ws');
+                }
+            } else if (proto === 'SSH_PROXY') {
+                if (!document.getElementById('inputPayload').value.includes('CONNECT')) {
+                    loadPreset('proxy');
+                }
+            }
+            saveLocal();
+            updatePreview();
         }
 
         async function publishToGitHub() {
@@ -570,13 +536,14 @@
             var token = document.getElementById('ghToken').value.trim();
 
             if (!user || !repo || !token) {
-                switchTab('github');
-                alert('Ingresa tu Usuario, Nombre del Repositorio y Token de GitHub para publicar.');
+                document.getElementById('githubSettingsBody').classList.remove('hidden');
+                document.getElementById('ghChevron').classList.add('rotate-180');
+                alert('Ingresa tu Usuario, Repositorio y Token de GitHub en la sección superior para publicar.');
                 return;
             }
 
             saveGithubSettings();
-            var jsonContent = JSON.stringify(buildFullJson(), null, 2);
+            var jsonContent = JSON.stringify(buildConfig(), null, 2);
             var contentBase64 = btoa(unescape(encodeURIComponent(jsonContent)));
             var filePath = 'config.json';
             var url = 'https://api.github.com/repos/' + user + '/' + repo + '/contents/' + filePath;
@@ -602,20 +569,24 @@
 
                 var putRes = await fetch(url, {
                     method: 'PUT',
-                    headers: { 'Authorization': 'token ' + token, 'Content-Type': 'application/json', 'Accept': 'application/vnd.github.v3+json' },
+                    headers: {
+                        'Authorization': 'token ' + token,
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/vnd.github.v3+json'
+                    },
                     body: JSON.stringify(putBody)
                 });
 
                 if (putRes.ok) {
                     var rawUrl = 'https://raw.githubusercontent.com/' + user + '/' + repo + '/main/' + filePath;
                     showToast('¡Publicado con éxito en GitHub!');
-                    alert('¡Configuración subida a GitHub!\n\nTu link Raw para la app es:\n' + rawUrl);
+                    alert('¡Configuración actualizada en GitHub con éxito!\n\nTu enlace Raw para la app es:\n' + rawUrl);
                 } else {
                     var err = await putRes.json();
-                    alert('Error de GitHub: ' + (err.message || 'Verifica tu token y permisos.'));
+                    alert('Error de GitHub: ' + (err.message || 'Verifica tu token y permisos de repositorio.'));
                 }
             } catch (e) {
-                alert('Error de conexión: ' + e.message);
+                alert('Error al conectar con GitHub: ' + e.message);
             }
         }
     </script>
