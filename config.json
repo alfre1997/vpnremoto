@@ -1,36 +1,41 @@
 {
-  "version": "2.0",
-  "appName": "NovaVPN Custom",
-  "updatedAt": "2026-11-08T01:45:43.063Z",
-  "config": {
-    "protocol": "SSH_DIRECT",
-    "sshHost": "ssh-nl1.sshkit.org",
-    "sshPort": 80,
-    "sshUsername": "",
-    "sshPassword": "",
-    "payload": "HTTP/1.6 200 ok[crlf]Host: survey.tigo.com[lf]Content-Length: 55555555[lf]",
-    "sniHost": "",
-    "proxyHost": "",
-    "proxyPort": 8080,
-    "wsPath": "/ssh",
-    "dnsPrimary": "1.1.1.1",
-    "dnsSecondary": "1.0.0.1",
-    "theme": "CYBER_NEON",
-    "banner": "Servidor actualizado vía GitHub • Conexión rápida 24/7"
-  },
-  "servers": [
-    {
-      "id": "srv-primary",
-      "name": "VPS Principal (SSH_DIRECT)",
-      "country": "Global",
-      "countryCode": "US",
-      "host": "ssh-nl1.sshkit.org",
-      "port": 80,
-      "sslPort": 443,
-      "wsPort": 80,
-      "username": "",
-      "password": "",
-      "isCustom": true
-    }
-  ]
+    "name": "Tigo SSHKIT SG",
+    "description": "",
+    "mode": "SSH_DIRECT",
+    "tls_version": "TLSv1.2",
+    "sorter": 1,
+    "status": "ACTIVE",
+    "auth": {
+        "username": "sshkit-1030535405",
+        "password": "olimpia2002",
+        "v2ray_uuid": null
+    },
+    "category": {
+        "name": "TIGO",
+        "color": "#001A640D",
+        "sorter": 1
+    },
+    "config_openvpn": null,
+    "config_payload": {
+        "payload": "HTTP/1.6 200 ok[crlf]Host: survey.tigo.com[lf]Content-Length: 55555555[lf]",
+        "sni": null
+    },
+    "config_v2ray": null,
+    "dns_server": {
+        "dns1": "1.1.1.1",
+        "dns2": "1.0.0.1"
+    },
+    "icon": "",
+    "proxy": {
+        "host": null,
+        "port": null
+    },
+    "server": {
+        "host": "ssh-nl1.sshkit.org",
+        "port": 80
+    },
+    "udp_ports": [
+        7300
+    ],
+    "url_check_user": ""
 }
