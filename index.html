@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NovaVPN • Panel de Control Web en GitHub Pages</title>
+    <title>NovaVPN • Panel de Control Web</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- FontAwesome Iconos -->
@@ -25,27 +25,27 @@
         .glow-cyan { box-shadow: 0 0 25px rgba(0, 240, 255, 0.25); }
     </style>
 </head>
-<body class="min-h-screen flex flex-col">
+<body class="min-h-screen flex flex-col items-center">
 
     <!-- BARRA SUPERIOR -->
-    <header class="bg-gray-950/95 backdrop-blur border-b border-gray-800 sticky top-0 z-50">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+    <header class="w-full bg-gray-950/95 backdrop-blur border-b border-gray-800 sticky top-0 z-50">
+        <div class="max-w-5xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
             <div class="flex items-center space-x-3">
                 <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-cyan-500 to-purple-600 flex items-center justify-center shadow-lg shadow-cyan-500/30">
-                    <i class="fa-solid fa-bolt text-white text-lg"></i>
+                    <i class="fa-solid fa-server text-white text-lg"></i>
                 </div>
                 <div>
-                    <span class="text-xl font-bold bg-gradient-to-r from-cyan-400 to-purple-400 bg-clip-text text-transparent">NovaVPN Cloud Panel</span>
-                    <span class="ml-2 text-[10px] px-2 py-0.5 rounded-full bg-cyan-950 text-cyan-400 border border-cyan-800 font-mono">Panel Central GitHub</span>
+                    <span class="text-xl font-bold bg-gradient-to-r from-cyan-400 to-purple-400 bg-clip-text text-transparent">NovaVPN Panel</span>
+                    <span class="ml-2 text-[10px] px-2 py-0.5 rounded-full bg-cyan-950 text-cyan-400 border border-cyan-800 font-mono">GitHub Pages</span>
                 </div>
             </div>
 
             <div class="flex items-center space-x-3">
-                <button onclick="downloadJson()" class="px-3 py-2 rounded-xl bg-gray-800 hover:bg-gray-700 text-white font-medium text-xs transition border border-gray-700 flex items-center space-x-2">
+                <button onclick="downloadJson()" class="px-3.5 py-2 rounded-xl bg-gray-800 hover:bg-gray-700 text-white font-medium text-xs transition border border-gray-700 flex items-center space-x-1.5">
                     <i class="fa-solid fa-download"></i>
-                    <span class="hidden sm:inline">Descargar</span> config.json
+                    <span>Descargar JSON</span>
                 </button>
-                <button onclick="publishToGitHub()" class="px-4 py-2 rounded-xl bg-cyan-500 hover:bg-cyan-400 text-gray-950 font-bold text-xs transition flex items-center space-x-2 glow-cyan">
+                <button onclick="publishToGitHub()" class="px-4 py-2 rounded-xl bg-cyan-500 hover:bg-cyan-400 text-gray-950 font-bold text-xs transition flex items-center space-x-1.5 glow-cyan">
                     <i class="fa-brands fa-github text-sm"></i>
                     <span>Publicar en GitHub</span>
                 </button>
@@ -53,17 +53,17 @@
         </div>
     </header>
 
-    <!-- NOTIFICACIÓN FLOTANTE -->
-    <div id="toast" class="fixed bottom-6 right-6 z-50 transform translate-y-24 opacity-0 transition duration-300 px-5 py-3.5 rounded-2xl bg-cyan-600 text-white font-medium shadow-2xl flex items-center space-x-3">
+    <!-- NOTIFICACIÓN TOAST -->
+    <div id="toast" class="fixed bottom-6 right-6 z-50 transform translate-y-24 opacity-0 transition duration-300 px-5 py-3 rounded-2xl bg-cyan-600 text-white font-medium shadow-2xl flex items-center space-x-2">
         <i class="fa-solid fa-circle-check text-lg"></i>
-        <span id="toastMsg">Cambios guardados</span>
+        <span id="toastMsg">Cambios actualizados</span>
     </div>
 
-    <!-- CONTENEDOR PRINCIPAL -->
-    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 flex-1 w-full space-y-6">
+    <!-- CONTENEDOR PRINCIPAL ÚNICO -->
+    <main class="max-w-4xl w-full px-4 sm:px-6 py-6 space-y-6">
 
-        <!-- CONFIGURACIÓN DE CONEXIÓN GITHUB (Desplegable) -->
-        <div class="bg-gray-900 border border-gray-800 rounded-3xl p-5 space-y-4">
+        <!-- CONFIGURACIÓN GITHUB (Desplegable) -->
+        <div class="bg-gray-900 border border-gray-800 rounded-3xl p-5 space-y-3">
             <div class="flex items-center justify-between cursor-pointer" onclick="toggleGithubSettings()">
                 <div class="flex items-center space-x-3">
                     <div class="w-8 h-8 rounded-lg bg-gray-800 flex items-center justify-center text-cyan-400">
@@ -71,10 +71,10 @@
                     </div>
                     <div>
                         <h3 class="text-sm font-bold text-white flex items-center space-x-2">
-                            <span>Sincronización con Repositorio GitHub</span>
+                            <span>Sincronización con GitHub</span>
                             <span id="ghStatusBadge" class="text-[10px] px-2 py-0.2 rounded-full bg-gray-800 text-gray-400 font-mono">No conectado</span>
                         </h3>
-                        <p class="text-[11px] text-gray-400">Publica el archivo <code class="text-cyan-300 font-mono">config.json</code> directamente para que tu app lo descargue desde cualquier red</p>
+                        <p class="text-[11px] text-gray-400">Guarda aquí tus credenciales para actualizar el <code class="text-cyan-300 font-mono">config.json</code> en tu repositorio con 1 clic</p>
                     </div>
                 </div>
                 <i id="ghChevron" class="fa-solid fa-chevron-down text-gray-400 transition"></i>
@@ -94,202 +94,184 @@
                     <input type="password" id="ghToken" placeholder="ghp_••••••••••••••••••••" class="w-full bg-gray-950 border border-gray-800 focus:border-cyan-400 rounded-xl px-3 py-2 text-white outline-none">
                 </div>
                 <div class="sm:col-span-3 text-[11px] text-gray-500 flex flex-wrap items-center justify-between gap-2">
-                    <span>Genera tu token en: <strong>GitHub > Settings > Developer settings > Personal access tokens (classic)</strong> marcando <code>repo</code>.</span>
+                    <span>Genera tu token en: <strong>GitHub > Settings > Developer settings > Personal access tokens (classic)</strong> seleccionando <code>repo</code>.</span>
                     <button onclick="saveGithubSettings()" class="text-cyan-400 font-bold hover:underline">Guardar credenciales en este navegador</button>
                 </div>
             </div>
         </div>
 
-        <!-- FORMULARIO PRINCIPAL UNIFICADO -->
-        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-
-            <!-- COLUMNA IZQUIERDA: SERVIDOR SSH Y PROTOCOLO -->
-            <div class="bg-gray-900 border border-gray-800 rounded-3xl p-6 space-y-4 shadow-xl">
-                <div class="flex items-center justify-between pb-3 border-b border-gray-800">
-                    <h3 class="text-base font-bold text-white flex items-center space-x-2">
-                        <i class="fa-solid fa-server text-cyan-400"></i>
-                        <span>1. Datos del Servidor SSH</span>
-                    </h3>
-                    <span class="text-[10px] px-2 py-0.5 rounded-full bg-cyan-950 text-cyan-400 border border-cyan-800 font-mono">VPS</span>
+        <!-- FORMULARIO ÚNICO: CONFIGURACIÓN COMPLETA DEL SERVIDOR CON PAYLOAD INTEGRADO -->
+        <div class="bg-gray-900 border border-gray-800 rounded-3xl p-6 sm:p-8 space-y-6 shadow-2xl">
+            
+            <div class="flex items-center justify-between pb-4 border-b border-gray-800">
+                <div>
+                    <h2 class="text-lg font-bold text-white flex items-center space-x-2">
+                        <i class="fa-solid fa-sliders text-cyan-400"></i>
+                        <span>Configuración del Servidor y Túnel</span>
+                    </h2>
+                    <p class="text-xs text-gray-400 mt-0.5">Configura tu servidor SSH junto con su payload, método de conexión y credenciales</p>
                 </div>
-
-                <div class="space-y-3.5 text-xs">
-                    <!-- Host y Puerto -->
-                    <div class="grid grid-cols-3 gap-2">
-                        <div class="col-span-2">
-                            <label class="block text-gray-400 font-semibold mb-1">Host / Dominio / IP SSH</label>
-                            <input type="text" id="inputSshHost" placeholder="ej. 159.65.20.10 o mi-vps.com" class="w-full bg-gray-950 border border-gray-800 focus:border-cyan-400 rounded-xl px-3 py-2.5 text-white font-mono outline-none">
-                        </div>
-                        <div>
-                            <label class="block text-gray-400 font-semibold mb-1">Puerto SSH</label>
-                            <input type="number" id="inputSshPort" value="22" class="w-full bg-gray-950 border border-gray-800 focus:border-cyan-400 rounded-xl px-3 py-2.5 text-white font-mono outline-none">
-                        </div>
-                    </div>
-
-                    <!-- Selector de Protocolo -->
-                    <div>
-                        <label class="block text-gray-400 font-semibold mb-1">Protocolo / Método de Conexión</label>
-                        <select id="inputProtocol" onchange="onProtocolChange()" class="w-full bg-gray-950 border border-gray-800 focus:border-cyan-400 rounded-xl px-3 py-2.5 text-white font-bold outline-none">
-                            <option value="SSH_WS">⚡ SSH + WebSocket (HTTP 80 CDN Cloudflare)</option>
-                            <option value="SSH_PROXY">🔌 SSH + HTTP Proxy (Squid + Inyección de Payload)</option>
-                            <option value="SSH_SSL_WS">🔒 SSH + SSL + WebSocket (HTTPS 443 WSS)</option>
-                            <option value="SSH_SSL">🛡️ SSH + SSL / TLS (SNI Bug Host Directo 443)</option>
-                            <option value="SSH_DIRECT">🌐 SSH Direct (Conexión Directa TCP 22)</option>
-                        </select>
-                    </div>
-
-                    <!-- Credenciales SSH Opcionales -->
-                    <div class="p-4 rounded-2xl bg-gray-950 border border-gray-800 space-y-2.5">
-                        <div class="font-bold text-gray-300 flex items-center justify-between">
-                            <span class="flex items-center space-x-1.5">
-                                <i class="fa-solid fa-key text-purple-400"></i>
-                                <span>Credenciales SSH (Opcional)</span>
-                            </span>
-                            <span class="text-[10px] text-purple-400 font-normal">¿Fijas o en App?</span>
-                        </div>
-                        <p class="text-[10px] text-gray-400 leading-tight">
-                            Si dejas estos campos <strong>en blanco</strong>, la app en el celular le pedirá al cliente su usuario y contraseña. Si los llenas aquí, conectará directamente sin pedir nada.
-                        </p>
-                        <div class="grid grid-cols-2 gap-2">
-                            <div>
-                                <label class="block text-gray-500 text-[10px] mb-0.5">Usuario SSH</label>
-                                <input type="text" id="inputSshUser" placeholder="Dejar vacío o escribir" class="w-full bg-gray-900 border border-gray-800 focus:border-purple-400 rounded-xl px-3 py-2 text-white font-mono outline-none">
-                            </div>
-                            <div>
-                                <label class="block text-gray-500 text-[10px] mb-0.5">Contraseña</label>
-                                <input type="password" id="inputSshPass" placeholder="Dejar vacía o escribir" class="w-full bg-gray-900 border border-gray-800 focus:border-purple-400 rounded-xl px-3 py-2 text-white font-mono outline-none">
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Aviso de la app y DNS -->
-                    <div class="space-y-2 pt-2 border-t border-gray-800">
-                        <div>
-                            <label class="block text-gray-400 font-semibold mb-1">Aviso / Banner en la App Móvil</label>
-                            <input type="text" id="inputBanner" value="Servidor actualizado vía GitHub • Conexión rápida 24/7" class="w-full bg-gray-950 border border-gray-800 focus:border-cyan-400 rounded-xl px-3 py-2 text-white outline-none">
-                        </div>
-                        <div class="grid grid-cols-2 gap-2">
-                            <div>
-                                <label class="block text-gray-400 font-semibold mb-1">DNS Primario</label>
-                                <input type="text" id="inputDnsPrimary" value="1.1.1.1" class="w-full bg-gray-950 border border-gray-800 rounded-xl px-3 py-1.5 text-white font-mono outline-none">
-                            </div>
-                            <div>
-                                <label class="block text-gray-400 font-semibold mb-1">DNS Secundario</label>
-                                <input type="text" id="inputDnsSecondary" value="1.0.0.1" class="w-full bg-gray-950 border border-gray-800 rounded-xl px-3 py-1.5 text-white font-mono outline-none">
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                <span class="text-[10px] px-2.5 py-1 rounded-full bg-cyan-950 text-cyan-400 border border-cyan-800 font-mono font-bold">En Línea</span>
             </div>
 
-            <!-- COLUMNA CENTRAL Y DERECHA: PAYLOAD, SNI, PROXY Y WS (SIEMPRE VISIBLE) -->
-            <div class="lg:col-span-2 bg-gray-900 border border-gray-800 rounded-3xl p-6 space-y-4 shadow-xl">
-                <div class="flex flex-wrap items-center justify-between gap-2 pb-3 border-b border-gray-800">
-                    <h3 class="text-base font-bold text-white flex items-center space-x-2">
-                        <i class="fa-solid fa-network-wired text-purple-400"></i>
-                        <span>2. Configuración de Payload, SNI y Proxy</span>
-                    </h3>
-                    <!-- Botones de Presets Rápidos -->
-                    <div class="flex items-center space-x-1.5">
-                        <span class="text-[10px] text-gray-500 font-bold uppercase mr-1">Presets:</span>
-                        <button type="button" onclick="loadPreset('ws')" class="text-[10px] px-2.5 py-1 rounded-lg bg-cyan-950 text-cyan-300 border border-cyan-800 hover:bg-cyan-900 font-bold transition">WS Cloudflare</button>
-                        <button type="button" onclick="loadPreset('proxy')" class="text-[10px] px-2.5 py-1 rounded-lg bg-purple-950 text-purple-300 border border-purple-800 hover:bg-purple-900 font-bold transition">Proxy Squid</button>
-                        <button type="button" onclick="loadPreset('front')" class="text-[10px] px-2.5 py-1 rounded-lg bg-emerald-950 text-emerald-300 border border-emerald-800 hover:bg-emerald-900 font-bold transition">Front Inject</button>
+            <div class="space-y-5 text-xs">
+
+                <!-- 1. HOST Y PUERTO SSH -->
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                    <div class="sm:col-span-2">
+                        <label class="block text-gray-400 font-bold mb-1">Host / Dominio / IP del Servidor SSH</label>
+                        <input type="text" id="inputSshHost" placeholder="ej. 159.65.20.10 o mi-vps.com" class="w-full bg-gray-950 border border-gray-800 focus:border-cyan-400 rounded-xl px-3.5 py-2.5 text-white font-mono outline-none text-sm">
+                    </div>
+                    <div>
+                        <label class="block text-gray-400 font-bold mb-1">Puerto SSH</label>
+                        <input type="number" id="inputSshPort" value="22" class="w-full bg-gray-950 border border-gray-800 focus:border-cyan-400 rounded-xl px-3.5 py-2.5 text-white font-mono outline-none text-sm">
                     </div>
                 </div>
 
-                <!-- SNI, Proxy y Ruta WS -->
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
-                    <div>
-                        <label class="block text-gray-400 font-semibold mb-1">SNI / Bug Host (Para SSL y CDN)</label>
-                        <input type="text" id="inputSni" placeholder="ej. cdn.cloudflare.net o m.facebook.com" class="w-full bg-gray-950 border border-gray-800 focus:border-cyan-400 rounded-xl px-3 py-2.5 text-white font-mono outline-none">
-                        <span class="text-[10px] text-gray-500">Host de bypass utilizado en conexiones cifradas SSL/TLS y WSS.</span>
-                    </div>
+                <!-- 2. PROTOCOLO / MÉTODO -->
+                <div>
+                    <label class="block text-gray-400 font-bold mb-1">Protocolo / Método de Conexión</label>
+                    <select id="inputProtocol" onchange="onProtocolChange()" class="w-full bg-gray-950 border border-gray-800 focus:border-cyan-400 rounded-xl px-3.5 py-2.5 text-white font-bold outline-none text-sm">
+                        <option value="SSH_DIRECT">🌐 SSH Direct (Conexión Directa TCP 22 / con o sin Payload)</option>
+                        <option value="SSH_WS">⚡ SSH + WebSocket (HTTP 80 CDN Cloudflare / Fastly)</option>
+                        <option value="SSH_PROXY">🔌 SSH + HTTP Proxy (Squid + Inyección de Payload)</option>
+                        <option value="SSH_SSL_WS">🔒 SSH + SSL + WebSocket (HTTPS 443 WSS CDN)</option>
+                        <option value="SSH_SSL">🛡️ SSH + SSL / TLS (SNI Bug Host Directo 443)</option>
+                    </select>
+                </div>
 
-                    <div>
-                        <label class="block text-gray-400 font-semibold mb-1">Ruta WebSocket (Path)</label>
-                        <input type="text" id="inputWsPath" value="/ssh" placeholder="/ssh o /?ed=2048" class="w-full bg-gray-950 border border-gray-800 focus:border-cyan-400 rounded-xl px-3 py-2.5 text-white font-mono outline-none">
-                        <span class="text-[10px] text-gray-500">Ruta configurada en tu servidor WebSocket (ej. /ssh).</span>
+                <!-- 3. PARÁMETROS DE BYPASS (SNI, PROXY Y WS) -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 p-4 bg-gray-950 rounded-2xl border border-gray-800">
+                    <div class="sm:col-span-2">
+                        <label class="block text-gray-400 font-semibold mb-1">SNI / Bug Host (Para SSL y WS)</label>
+                        <input type="text" id="inputSni" placeholder="ej. cdn.cloudflare.net o m.facebook.com" class="w-full bg-gray-900 border border-gray-800 focus:border-cyan-400 rounded-xl px-3 py-2 text-white font-mono outline-none">
                     </div>
-
                     <div>
-                        <label class="block text-gray-400 font-semibold mb-1">Proxy Remoto (Host / IP)</label>
-                        <input type="text" id="inputProxyHost" placeholder="104.16.249.249 o IP de tu Squid" class="w-full bg-gray-950 border border-gray-800 focus:border-cyan-400 rounded-xl px-3 py-2.5 text-white font-mono outline-none">
+                        <label class="block text-gray-400 font-semibold mb-1">Ruta WebSocket</label>
+                        <input type="text" id="inputWsPath" value="/ssh" placeholder="/ssh o /?ed=2048" class="w-full bg-gray-900 border border-gray-800 focus:border-cyan-400 rounded-xl px-3 py-2 text-white font-mono outline-none">
                     </div>
-
                     <div>
-                        <label class="block text-gray-400 font-semibold mb-1">Puerto del Proxy Remoto</label>
-                        <input type="number" id="inputProxyPort" value="8080" class="w-full bg-gray-950 border border-gray-800 focus:border-cyan-400 rounded-xl px-3 py-2.5 text-white font-mono outline-none">
+                        <label class="block text-gray-400 font-semibold mb-1">Proxy Remoto (Host:Puerto)</label>
+                        <div class="flex space-x-1">
+                            <input type="text" id="inputProxyHost" placeholder="104.16.249.249" class="w-2/3 bg-gray-900 border border-gray-800 focus:border-cyan-400 rounded-xl px-2 py-2 text-white font-mono outline-none">
+                            <input type="number" id="inputProxyPort" value="8080" class="w-1/3 bg-gray-900 border border-gray-800 focus:border-cyan-400 rounded-xl px-2 py-2 text-white font-mono outline-none">
+                        </div>
                     </div>
                 </div>
 
-                <!-- CAJA VISIBLE DEL PAYLOAD HTTP -->
+                <!-- 4. APARTADO DE PAYLOAD HTTP (INTEGRADO DIRECTAMENTE AQUÍ) -->
                 <div class="space-y-2 pt-2 border-t border-gray-800">
-                    <div class="flex items-center justify-between">
-                        <label class="block text-xs font-bold text-cyan-400 flex items-center space-x-1.5">
+                    <div class="flex flex-wrap items-center justify-between gap-2">
+                        <label class="text-xs font-bold text-cyan-400 flex items-center space-x-1.5">
                             <i class="fa-solid fa-code"></i>
                             <span>PAYLOAD HTTP PERSONALIZADO</span>
                         </label>
-                        <span class="text-[10px] text-gray-500 font-mono">Inyección HTTP Custom</span>
+                        <!-- Presets de Payload -->
+                        <div class="flex items-center space-x-1.5">
+                            <span class="text-[10px] text-gray-500 font-bold uppercase mr-1">Presets:</span>
+                            <button type="button" onclick="loadPreset('ws')" class="text-[10px] px-2.5 py-1 rounded-lg bg-cyan-950 text-cyan-300 border border-cyan-800 hover:bg-cyan-900 font-bold transition">WS Cloudflare</button>
+                            <button type="button" onclick="loadPreset('proxy')" class="text-[10px] px-2.5 py-1 rounded-lg bg-purple-950 text-purple-300 border border-purple-800 hover:bg-purple-900 font-bold transition">Proxy Squid</button>
+                            <button type="button" onclick="loadPreset('front')" class="text-[10px] px-2.5 py-1 rounded-lg bg-emerald-950 text-emerald-300 border border-emerald-800 hover:bg-emerald-900 font-bold transition">Front Inject</button>
+                        </div>
                     </div>
 
-                    <!-- Barra de Tags / Comodines de inserción rápida -->
-                    <div class="flex flex-wrap gap-1.5 p-2.5 bg-gray-950 rounded-2xl border border-gray-800">
-                        <span class="text-[10px] text-gray-500 py-0.5 mr-1 font-bold">Insertar:</span>
-                        <button type="button" onclick="insertTag('[host_port]')" class="text-[10px] px-2 py-0.5 rounded-lg bg-gray-800 hover:bg-cyan-950 hover:text-cyan-400 text-gray-300 font-mono transition">[host_port]</button>
-                        <button type="button" onclick="insertTag('[host]')" class="text-[10px] px-2 py-0.5 rounded-lg bg-gray-800 hover:bg-cyan-950 hover:text-cyan-400 text-gray-300 font-mono transition">[host]</button>
-                        <button type="button" onclick="insertTag('[port]')" class="text-[10px] px-2 py-0.5 rounded-lg bg-gray-800 hover:bg-cyan-950 hover:text-cyan-400 text-gray-300 font-mono transition">[port]</button>
-                        <button type="button" onclick="insertTag('[protocol]')" class="text-[10px] px-2 py-0.5 rounded-lg bg-gray-800 hover:bg-cyan-950 hover:text-cyan-400 text-gray-300 font-mono transition">[protocol]</button>
-                        <button type="button" onclick="insertTag('[crlf]')" class="text-[10px] px-2 py-0.5 rounded-lg bg-gray-800 hover:bg-cyan-950 hover:text-cyan-400 text-gray-300 font-mono transition">[crlf]</button>
-                        <button type="button" onclick="insertTag('[ua]')" class="text-[10px] px-2 py-0.5 rounded-lg bg-gray-800 hover:bg-cyan-950 hover:text-cyan-400 text-gray-300 font-mono transition">[ua]</button>
-                        <button type="button" onclick="insertTag('[split]')" class="text-[10px] px-2 py-0.5 rounded-lg bg-gray-800 hover:bg-cyan-950 hover:text-cyan-400 text-gray-300 font-mono transition">[split]</button>
+                    <!-- Botones de inserción rápida de comodines -->
+                    <div class="flex flex-wrap gap-1.5 p-2 bg-gray-950 rounded-xl border border-gray-800">
+                        <span class="text-[10px] text-gray-500 py-0.5 mr-1 font-bold">Tags:</span>
+                        <button type="button" onclick="insertTag('[host_port]')" class="text-[10px] px-2 py-0.5 rounded-lg bg-gray-800 hover:bg-cyan-950 text-cyan-300 font-mono transition">[host_port]</button>
+                        <button type="button" onclick="insertTag('[host]')" class="text-[10px] px-2 py-0.5 rounded-lg bg-gray-800 hover:bg-cyan-950 text-cyan-300 font-mono transition">[host]</button>
+                        <button type="button" onclick="insertTag('[port]')" class="text-[10px] px-2 py-0.5 rounded-lg bg-gray-800 hover:bg-cyan-950 text-cyan-300 font-mono transition">[port]</button>
+                        <button type="button" onclick="insertTag('[protocol]')" class="text-[10px] px-2 py-0.5 rounded-lg bg-gray-800 hover:bg-cyan-950 text-cyan-300 font-mono transition">[protocol]</button>
+                        <button type="button" onclick="insertTag('[crlf]')" class="text-[10px] px-2 py-0.5 rounded-lg bg-gray-800 hover:bg-cyan-950 text-cyan-300 font-mono transition">[crlf]</button>
+                        <button type="button" onclick="insertTag('[ua]')" class="text-[10px] px-2 py-0.5 rounded-lg bg-gray-800 hover:bg-cyan-950 text-cyan-300 font-mono transition">[ua]</button>
+                        <button type="button" onclick="insertTag('[split]')" class="text-[10px] px-2 py-0.5 rounded-lg bg-gray-800 hover:bg-cyan-950 text-cyan-300 font-mono transition">[split]</button>
                     </div>
 
-                    <!-- TEXTAREA DEL PAYLOAD -->
-                    <textarea id="inputPayload" rows="6" class="w-full bg-gray-950 border border-cyan-500/30 focus:border-cyan-400 rounded-2xl p-4 text-cyan-300 font-mono text-xs focus:outline-none leading-relaxed shadow-inner" placeholder="Escribe aquí tu payload o presiona un botón de Preset de arriba..."></textarea>
+                    <!-- Textarea del Payload -->
+                    <textarea id="inputPayload" rows="6" class="w-full bg-gray-950 border border-cyan-500/30 focus:border-cyan-400 rounded-2xl p-3.5 text-cyan-300 font-mono text-xs focus:outline-none leading-relaxed shadow-inner" placeholder="Escribe aquí tu payload o usa un preset..."></textarea>
                 </div>
 
-                <!-- Botones de Acción -->
-                <div class="flex flex-wrap items-center justify-between gap-3 pt-3 border-t border-gray-800">
-                    <span class="text-[11px] text-gray-400">Todos los cambios se reflejan automáticamente en el archivo JSON.</span>
+                <!-- 5. CREDENCIALES SSH (OPCIONAL) -->
+                <div class="p-4 rounded-2xl bg-gray-950 border border-gray-800 space-y-2">
+                    <div class="font-bold text-gray-300 flex items-center justify-between">
+                        <span class="flex items-center space-x-1.5">
+                            <i class="fa-solid fa-key text-purple-400"></i>
+                            <span>Credenciales SSH de Acceso (Opcional)</span>
+                        </span>
+                        <span class="text-[10px] text-purple-400 font-normal">¿Fijas o solicitar en el celular?</span>
+                    </div>
+                    <p class="text-[10px] text-gray-400 leading-tight">
+                        Si dejas estos campos <strong>en blanco</strong>, la aplicación en el celular le pedirá al cliente su usuario y contraseña antes de conectar. Si los llenas aquí, conectará directamente sin pedir nada.
+                    </p>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
+                        <div>
+                            <label class="block text-gray-500 text-[10px] mb-0.5">Usuario SSH</label>
+                            <input type="text" id="inputSshUser" placeholder="Dejar vacío para solicitar en la app" class="w-full bg-gray-900 border border-gray-800 focus:border-purple-400 rounded-xl px-3 py-2 text-white font-mono outline-none">
+                        </div>
+                        <div>
+                            <label class="block text-gray-500 text-[10px] mb-0.5">Contraseña SSH</label>
+                            <input type="password" id="inputSshPass" placeholder="Dejar vacía para solicitar en la app" class="w-full bg-gray-900 border border-gray-800 focus:border-purple-400 rounded-xl px-3 py-2 text-white font-mono outline-none">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 6. AVISO EN LA APP Y DNS -->
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-2 border-t border-gray-800">
+                    <div class="sm:col-span-2">
+                        <label class="block text-gray-400 font-semibold mb-1">Mensaje de Aviso / Banner (Aparece en la app)</label>
+                        <input type="text" id="inputBanner" value="Servidor actualizado vía GitHub • Conexión rápida 24/7" class="w-full bg-gray-950 border border-gray-800 focus:border-cyan-400 rounded-xl px-3 py-2 text-white outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-gray-400 font-semibold mb-1">DNS Primario y Secundario</label>
+                        <div class="flex space-x-1">
+                            <input type="text" id="inputDnsPrimary" value="1.1.1.1" class="w-1/2 bg-gray-950 border border-gray-800 rounded-xl px-2 py-2 text-white font-mono outline-none">
+                            <input type="text" id="inputDnsSecondary" value="1.0.0.1" class="w-1/2 bg-gray-950 border border-gray-800 rounded-xl px-2 py-2 text-white font-mono outline-none">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- BOTONES DE ACCIÓN INMEDIATOS -->
+                <div class="flex flex-wrap items-center justify-between gap-3 pt-4 border-t border-gray-800">
+                    <span class="text-[11px] text-gray-400">Todos los cambios se aplican al JSON de configuración.</span>
                     <div class="flex items-center space-x-2">
-                        <button onclick="downloadJson()" class="px-4 py-2 rounded-xl bg-gray-800 hover:bg-gray-700 text-white font-bold text-xs transition border border-gray-700 flex items-center space-x-1.5">
+                        <button onclick="downloadJson()" class="px-4 py-2.5 rounded-xl bg-gray-800 hover:bg-gray-700 text-white font-bold text-xs transition border border-gray-700 flex items-center space-x-1.5">
                             <i class="fa-solid fa-download"></i>
                             <span>Descargar config.json</span>
                         </button>
-                        <button onclick="publishToGitHub()" class="px-5 py-2 rounded-xl bg-cyan-500 hover:bg-cyan-400 text-gray-950 font-bold text-xs transition flex items-center space-x-1.5 glow-cyan">
-                            <i class="fa-brands fa-github"></i>
+                        <button onclick="publishToGitHub()" class="px-5 py-2.5 rounded-xl bg-cyan-500 hover:bg-cyan-400 text-gray-950 font-bold text-xs transition flex items-center space-x-1.5 glow-cyan">
+                            <i class="fa-brands fa-github text-sm"></i>
                             <span>Publicar en GitHub</span>
                         </button>
                     </div>
                 </div>
+
             </div>
 
-            <!-- VISTA PREVIA Y ENLACE RAW DE GITHUB -->
-            <div class="lg:col-span-3 bg-gray-950 border border-gray-800 rounded-3xl p-6 space-y-4 shadow-2xl font-mono text-xs">
-                <div class="flex items-center justify-between pb-3 border-b border-gray-800">
-                    <div class="flex items-center space-x-2">
-                        <span class="w-3 h-3 rounded-full bg-green-400 animate-pulse"></span>
-                        <span class="text-white font-bold font-sans">Enlace Raw generado para la App Móvil:</span>
-                    </div>
-                    <button onclick="copyRawUrl()" class="px-3 py-1.5 rounded-lg bg-gray-800 hover:bg-gray-700 text-cyan-400 font-sans text-xs transition">
-                        <i class="fa-solid fa-copy mr-1"></i> Copiar Enlace
-                    </button>
-                </div>
+        </div>
 
-                <div class="p-3 bg-gray-900 border border-gray-800 rounded-xl text-cyan-300 break-all select-all" id="rawUrlDisplay">
-                    https://raw.githubusercontent.com/tu_usuario/novavpn-panel/main/config.json
+        <!-- ENLACE RAW Y VISTA PREVIA DEL JSON GENERADO -->
+        <div class="bg-gray-950 border border-gray-800 rounded-3xl p-6 space-y-4 font-mono text-xs shadow-2xl">
+            <div class="flex items-center justify-between pb-3 border-b border-gray-800">
+                <div class="flex items-center space-x-2">
+                    <span class="w-3 h-3 rounded-full bg-green-400 animate-pulse"></span>
+                    <span class="text-white font-bold font-sans">Enlace Raw generado para la App Móvil:</span>
                 </div>
-
-                <div class="flex items-center justify-between pt-2">
-                    <span class="text-gray-400 font-bold font-sans">Contenido de config.json en tiempo real:</span>
-                    <button onclick="copyGeneratedJson()" class="px-3 py-1.5 rounded-lg bg-gray-800 hover:bg-gray-700 text-gray-300 font-sans text-xs transition">
-                        <i class="fa-solid fa-code mr-1"></i> Copiar Código JSON
-                    </button>
-                </div>
-                <pre id="jsonPreview" class="bg-gray-900 border border-gray-800/80 rounded-2xl p-4 text-cyan-300 overflow-x-auto text-[11px] leading-relaxed max-h-72"></pre>
+                <button onclick="copyRawUrl()" class="px-3 py-1.5 rounded-lg bg-gray-800 hover:bg-gray-700 text-cyan-400 font-sans text-xs transition">
+                    <i class="fa-solid fa-copy mr-1"></i> Copiar Enlace
+                </button>
             </div>
 
+            <div class="p-3 bg-gray-900 border border-gray-800 rounded-xl text-cyan-300 break-all select-all text-xs" id="rawUrlDisplay">
+                https://raw.githubusercontent.com/tu_usuario/novavpn-panel/main/config.json
+            </div>
+
+            <div class="flex items-center justify-between pt-2">
+                <span class="text-gray-400 font-bold font-sans">Vista Previa del Archivo config.json:</span>
+                <button onclick="copyGeneratedJson()" class="px-3 py-1.5 rounded-lg bg-gray-800 hover:bg-gray-700 text-gray-300 font-sans text-xs transition">
+                    <i class="fa-solid fa-code mr-1"></i> Copiar Código JSON
+                </button>
+            </div>
+            <pre id="jsonPreview" class="bg-gray-900 border border-gray-800 rounded-2xl p-4 text-cyan-300 overflow-x-auto text-[11px] leading-relaxed max-h-72"></pre>
         </div>
 
     </main>
@@ -311,7 +293,7 @@
                 badge.className = 'text-[10px] px-2 py-0.2 rounded-full bg-green-950 text-green-400 border border-green-800 font-mono';
             }
 
-            var saved = JSON.parse(localStorage.getItem('novavpn_panel_config') || '{}');
+            var saved = JSON.parse(localStorage.getItem('novavpn_single_config') || '{}');
             if (saved.sshHost) document.getElementById('inputSshHost').value = saved.sshHost;
             if (saved.sshPort) document.getElementById('inputSshPort').value = saved.sshPort;
             if (saved.protocol) document.getElementById('inputProtocol').value = saved.protocol;
@@ -415,7 +397,7 @@
                 },
                 servers: [
                     {
-                        id: "srv-active-primary",
+                        id: "srv-primary",
                         name: host ? "VPS Principal (" + proto + ")" : "Servidor Principal",
                         country: "Global",
                         countryCode: "US",
@@ -447,7 +429,7 @@
                 dnsPrimary: document.getElementById('inputDnsPrimary').value.trim(),
                 dnsSecondary: document.getElementById('inputDnsSecondary').value.trim()
             };
-            localStorage.setItem('novavpn_panel_config', JSON.stringify(data));
+            localStorage.setItem('novavpn_single_config', JSON.stringify(data));
         }
 
         function updatePreview() {
@@ -512,7 +494,7 @@
             }
             saveLocal();
             updatePreview();
-            showToast('Preset cargado en el editor de Payload');
+            showToast('Preset aplicado al payload');
         }
 
         function onProtocolChange() {
