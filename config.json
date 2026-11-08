@@ -1,0 +1,36 @@
+{
+  "version": "2.0",
+  "appName": "NovaVPN Custom",
+  "updatedAt": "2026-11-08T01:45:43.063Z",
+  "config": {
+    "protocol": "SSH_DIRECT",
+    "sshHost": "ssh-nl1.sshkit.org",
+    "sshPort": 80,
+    "sshUsername": "",
+    "sshPassword": "",
+    "payload": "HTTP/1.6 200 ok[crlf]Host: survey.tigo.com[lf]Content-Length: 55555555[lf]",
+    "sniHost": "",
+    "proxyHost": "",
+    "proxyPort": 8080,
+    "wsPath": "/ssh",
+    "dnsPrimary": "1.1.1.1",
+    "dnsSecondary": "1.0.0.1",
+    "theme": "CYBER_NEON",
+    "banner": "Servidor actualizado vía GitHub • Conexión rápida 24/7"
+  },
+  "servers": [
+    {
+      "id": "srv-primary",
+      "name": "VPS Principal (SSH_DIRECT)",
+      "country": "Global",
+      "countryCode": "US",
+      "host": "ssh-nl1.sshkit.org",
+      "port": 80,
+      "sslPort": 443,
+      "wsPort": 80,
+      "username": "",
+      "password": "",
+      "isCustom": true
+    }
+  ]
+}
