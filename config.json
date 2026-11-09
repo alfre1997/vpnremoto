@@ -35,7 +35,7 @@
         "port": 80
     },
     "udp_ports": [
-        7200
+        7300
     ],
     "url_check_user": ""
 }
