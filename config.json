@@ -17,7 +17,7 @@
     },
     "config_openvpn": null,
     "config_payload": {
-        "payload": "HTTP/1.6 200 ok[crlf]Host: survey.tigo.com[lf]Content-Length: 55555555[lf]",
+        "payload": "HTTP/1.1 200 ok[crlf]Host: survey.tigo.com[lf]Content-Length: 55555555[lf]",
         "sni": null
     },
     "config_v2ray": null,
@@ -27,12 +27,12 @@
     },
     "icon": "",
     "proxy": {
-        "host": "ssh-nl1.sshkit.org",
+        "host": "212.129.0.35",
         "port": 80
     },
     "server": {
-        "host": "212.129.0.35",
-        "port": 443
+        "host": "sshkit-1030535405",
+        "port": 143
     },
     "udp_ports": [
         7200
