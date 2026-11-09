@@ -1,7 +1,7 @@
 {
     "name": "Tigo SSHKIT NL",
     "description": "",
-    "mode": "SSH_DIRECT",
+    "mode": "SSH_WS",
     "tls_version": "TLSv1.2",
     "sorter": 1,
     "status": "ACTIVE",
