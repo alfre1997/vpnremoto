@@ -89,18 +89,18 @@
             <div id="githubSettingsBody" class="hidden grid grid-cols-1 sm:grid-cols-3 gap-3 pt-3 border-t border-gray-800 text-xs">
                 <div>
                     <label class="block text-gray-400 font-semibold mb-1">Usuario de GitHub</label>
-                    <input type="text" id="ghUser" placeholder="ej. tu_usuario" class="w-full bg-gray-950 border border-gray-800 focus:border-cyan-400 rounded-xl px-3 py-2 text-white outline-none">
+                    <input type="text" id="ghUser" value="alfre1997" placeholder="ej. alfre1997" class="w-full bg-gray-950 border border-gray-800 focus:border-cyan-400 rounded-xl px-3 py-2 text-white outline-none">
                 </div>
                 <div>
                     <label class="block text-gray-400 font-semibold mb-1">Nombre del Repositorio</label>
-                    <input type="text" id="ghRepo" placeholder="ej. novavpn-panel" class="w-full bg-gray-950 border border-gray-800 focus:border-cyan-400 rounded-xl px-3 py-2 text-white outline-none">
+                    <input type="text" id="ghRepo" value="vpnremoto" placeholder="ej. vpnremoto" class="w-full bg-gray-950 border border-gray-800 focus:border-cyan-400 rounded-xl px-3 py-2 text-white outline-none">
                 </div>
                 <div>
                     <label class="block text-gray-400 font-semibold mb-1">Token de GitHub (PAT con permiso repo)</label>
                     <input type="password" id="ghToken" placeholder="ghp_••••••••••••••••••••" class="w-full bg-gray-950 border border-gray-800 focus:border-cyan-400 rounded-xl px-3 py-2 text-white outline-none">
                 </div>
                 <div class="sm:col-span-3 text-[11px] text-gray-500 flex flex-wrap items-center justify-between gap-2">
-                    <span>Genera tu token en: <strong>GitHub &gt; Settings &gt; Developer settings &gt; Personal access tokens (classic)</strong> con permiso <code>repo</code>.</span>
+                    <span>Genera tu token en: <strong>GitHub &gt; Settings &gt; Developer settings &gt; Personal access tokens (classic)</strong> seleccionando <code>repo</code>.</span>
                     <button onclick="saveGithubSettings()" class="text-cyan-400 font-bold hover:underline">Guardar credenciales en este navegador</button>
                 </div>
             </div>
@@ -151,6 +151,7 @@
                     <label class="block text-gray-400 font-bold mb-1">Modo de Conexión (mode)</label>
                     <select id="inputProtocol" onchange="onProtocolChange()" class="w-full bg-gray-950 border border-gray-800 focus:border-cyan-400 rounded-xl px-3.5 py-2.5 text-white font-bold outline-none text-sm">
                         <option value="SSH_DIRECT" selected>🌐 SSH_DIRECT (Conexión Directa TCP / sin SNI / con Payload)</option>
+                        <option value="SSH_TCP">⚡ SSH_TCP (Conexión TCP Pura Directa)</option>
                         <option value="SSH_PROXY">🔌 SSH_PROXY (SSH a través de Proxy HTTP + Payload)</option>
                         <option value="SSH_SSL">🛡️ SSH_SSL (SSL / TLS con SNI Bug Host)</option>
                         <option value="SSH_WS">⚡ SSH_WS (WebSocket Directo HTTP 80 CDN)</option>
@@ -167,7 +168,7 @@
                             <span>SNI / Bug Host (config_payload.sni)</span>
                         </label>
                         <input type="text" id="inputSni" placeholder="ej. m.facebook.com o cdn.cloudflare.net" class="w-full bg-gray-900 border border-gray-800 focus:border-cyan-400 rounded-xl px-3.5 py-2 text-white font-mono outline-none">
-                        <span class="text-[10px] text-gray-500">Host de bypass utilizado en el certificado TLS. En SSH_DIRECT este campo se envía automáticamente como <code>null</code>.</span>
+                        <span class="text-[10px] text-gray-500">Host de bypass utilizado en el certificado TLS. En SSH_DIRECT y SSH_TCP este campo se envía automáticamente como <code>null</code>.</span>
                     </div>
 
                     <!-- Proxy Remoto (SOLO en SSH_PROXY) -->
@@ -193,6 +194,7 @@
                         <!-- Presets de Payload -->
                         <div class="flex items-center space-x-1.5">
                             <span class="text-[10px] text-gray-500 font-bold uppercase mr-1">Presets:</span>
+                            <button type="button" onclick="loadPreset('tcp')" class="text-[10px] px-2.5 py-1 rounded-lg bg-gray-800 text-cyan-300 hover:bg-gray-700 font-bold transition">SSH TCP</button>
                             <button type="button" onclick="loadPreset('direct')" class="text-[10px] px-2.5 py-1 rounded-lg bg-gray-800 text-gray-300 hover:bg-gray-700 font-bold transition">Directo</button>
                             <button type="button" onclick="loadPreset('ws')" class="text-[10px] px-2.5 py-1 rounded-lg bg-cyan-950 text-cyan-300 border border-cyan-800 hover:bg-cyan-900 font-bold transition">WS Cloudflare</button>
                             <button type="button" onclick="loadPreset('proxy')" class="text-[10px] px-2.5 py-1 rounded-lg bg-purple-950 text-purple-300 border border-purple-800 hover:bg-purple-900 font-bold transition">Proxy Squid</button>
@@ -286,7 +288,7 @@
             </div>
 
             <div class="p-3 bg-gray-900 border border-gray-800 rounded-xl text-cyan-300 break-all select-all text-xs" id="rawUrlDisplay">
-                https://raw.githubusercontent.com/tu_usuario/novavpn-panel/main/config.json
+                https://raw.githubusercontent.com/alfre1997/vpnremoto/main/config.json
             </div>
 
             <div class="flex items-center justify-between pt-2">
@@ -303,12 +305,12 @@
     <!-- LOGICA JAVASCRIPT -->
     <script>
         window.addEventListener('DOMContentLoaded', function() {
-            var savedUser = localStorage.getItem('gh_user') || '';
-            var savedRepo = localStorage.getItem('gh_repo') || '';
+            var savedUser = localStorage.getItem('gh_user') || 'alfre1997';
+            var savedRepo = localStorage.getItem('gh_repo') || 'vpnremoto';
             var savedToken = localStorage.getItem('gh_token') || '';
 
-            if (savedUser) document.getElementById('ghUser').value = savedUser;
-            if (savedRepo) document.getElementById('ghRepo').value = savedRepo;
+            document.getElementById('ghUser').value = savedUser;
+            document.getElementById('ghRepo').value = savedRepo;
             if (savedToken) document.getElementById('ghToken').value = savedToken;
 
             if (savedUser && savedRepo) {
@@ -465,8 +467,8 @@
             var cfg = buildConfig();
             document.getElementById('jsonPreview').innerText = JSON.stringify(cfg, null, 4);
 
-            var u = document.getElementById('ghUser').value.trim() || 'tu_usuario';
-            var r = document.getElementById('ghRepo').value.trim() || 'novavpn-panel';
+            var u = document.getElementById('ghUser').value.trim() || 'alfre1997';
+            var r = document.getElementById('ghRepo').value.trim() || 'vpnremoto';
             var raw = 'https://raw.githubusercontent.com/' + u + '/' + r + '/main/config.json';
             document.getElementById('rawUrlDisplay').innerText = raw;
         }
@@ -511,7 +513,10 @@
             var p = document.getElementById('inputPayload');
             var proto = document.getElementById('inputProtocol');
 
-            if (type === 'direct') {
+            if (type === 'tcp') {
+                proto.value = 'SSH_TCP';
+                p.value = "";
+            } else if (type === 'direct') {
                 proto.value = 'SSH_DIRECT';
                 p.value = "payloadaca";
             } else if (type === 'ws') {
@@ -534,7 +539,7 @@
             var dynWrap = document.getElementById('dynamicContainer');
 
             // 1. SNI: Aparece ÚNICAMENTE cuando se selecciona una opción con SSL / TLS
-            // NUNCA aparece en SSH_DIRECT ni SSH_WS
+            // NUNCA aparece en SSH_DIRECT, SSH_TCP ni SSH_WS
             var requiresSsl = (mode === 'SSH_SSL' || mode === 'SSH_SSL_WS');
             if (requiresSsl) {
                 sniBox.classList.remove('hidden');
@@ -550,7 +555,7 @@
                 proxyBox.classList.add('hidden');
             }
 
-            // Si es SSH_DIRECT o SSH_WS (sin SSL ni Proxy), ocultar dynamicContainer
+            // Si es SSH_DIRECT, SSH_TCP o SSH_WS (sin SSL ni Proxy), ocultar dynamicContainer
             if (!requiresSsl && !requiresProxy) {
                 dynWrap.classList.add('hidden');
             } else {
