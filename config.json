@@ -22,8 +22,8 @@
     },
     "config_v2ray": null,
     "dns_server": {
-        "dns1": "1.1.1.1",
-        "dns2": "1.0.0.1"
+        "dns1": "",
+        "dns2": ""
     },
     "icon": "",
     "proxy": {
@@ -31,7 +31,7 @@
         "port": null
     },
     "server": {
-        "host": "sshkit-1030535405",
+        "host": "ssh-nl1.sshkit.org",
         "port": 80
     },
     "udp_ports": [
