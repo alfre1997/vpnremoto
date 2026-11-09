@@ -1,7 +1,7 @@
 {
     "name": "Tigo SSHKIT NL",
     "description": "",
-    "mode": "SSH_PROXY",
+    "mode": "SSH_DIRECT",
     "tls_version": "TLSv1.2",
     "sorter": 1,
     "status": "ACTIVE",
@@ -27,8 +27,8 @@
     },
     "icon": "",
     "proxy": {
-        "host": "212.129.0.35",
-        "port": 80
+        "host": null,
+        "port": null
     },
     "server": {
         "host": "ssh-nl1.sshkit.org",
