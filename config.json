@@ -32,7 +32,7 @@
     },
     "server": {
         "host": "ssh-nl1.sshkit.org",
-        "port": 143
+        "port": 443
     },
     "udp_ports": [
         7200
