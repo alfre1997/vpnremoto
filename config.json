@@ -27,11 +27,11 @@
     },
     "icon": "",
     "proxy": {
-        "host": "212.129.0.35",
+        "host": "ssh-nl1.sshkit.org",
         "port": 80
     },
     "server": {
-        "host": "ssh-nl1.sshkit.org",
+        "host": "212.129.0.35",
         "port": 143
     },
     "udp_ports": [
