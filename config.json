@@ -1,7 +1,7 @@
 {
-    "name": "Tigo SSHKIT SG",
+    "name": "Tigo SSHKIT NL",
     "description": "",
-    "mode": "SSH_DIRECT",
+    "mode": "SSH_TCP",
     "tls_version": "TLSv1.2",
     "sorter": 1,
     "status": "ACTIVE",
@@ -35,7 +35,7 @@
         "port": 80
     },
     "udp_ports": [
-        7300
+        7200
     ],
     "url_check_user": ""
 }
